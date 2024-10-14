@@ -21,7 +21,7 @@ add -p PARTICIPANT_NAME -e EVENT_NAME
 Enter a command: Event added successfully
 ------------------------
 Enter a command: There are 1 events in your list! Here are your scheduled events:
-1. Event name: dinner party/ Event time: 2024-10-10/ Event venue: Alice's House
+1. Event name: dinner party / Event time: 2024-10-10 / Event venue: Alice's House
 
 ------------------------
 Enter a command: Thank you for using EventManagerCLI. Goodbye!
