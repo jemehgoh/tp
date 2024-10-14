@@ -63,6 +63,24 @@ public class EventList  {
     }
 
     /**
+     * Returns an event in the event list with the specified name.
+     * If the event is not in the list, throws a {@link ItemNotFoundException} with an error message
+     *
+     * @param eventName the name of the event
+     * @return the event in the event list with the specified name
+     * @throws ItemNotFoundException if the event is not in the event list
+     */
+    public Event getEventByName(String eventName) throws ItemNotFoundException {
+        for (Event event : eventList) {
+            if (event.getEventName().equals(eventName)) {
+                return event;
+            }
+        }
+
+        throw new ItemNotFoundException(MISSING_EVENT_MESSAGE);
+    }
+
+    /**
      * Removes an event from the event list by its name.
      *
      * @param eventName the name of the event to be removed.

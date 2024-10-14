@@ -1,6 +1,7 @@
 package seedu.manager.command;
 
 import seedu.manager.event.Event;
+import seedu.manager.exception.ItemNotFoundException;
 
 /**
  * Represents a command to view the list of participants in an event.
@@ -27,23 +28,20 @@ public class ViewCommand extends Command{
      * @return The command output with a list message
      */
     public CommandOutput execute() {
-        Event event = null;
-        for (int i = 0; i < eventList.getListSize(); i++) {
-            if (eventList.getEvent(i).getEventName().equals(eventName)) {
-                event = eventList.getEvent(i);
+        try {
+            Event eventToView = eventList.getEventByName(this.eventName);
+
+            StringBuilder outputMessage = new StringBuilder(
+                    String.format(VIEW_MESSAGE, eventToView.getParticipantCount(), eventName) + "\n");
+            int count = 1;
+            for (String participant : eventToView.getParticipantList()) {
+                outputMessage.append(String.format("%d. %s\n", count, participant));
+                count++;
             }
+
+            return new CommandOutput(outputMessage.toString(), false);
+        } catch (ItemNotFoundException exception) {
+            return new CommandOutput(exception.getMessage(), false);
         }
-
-        //to handle errors in the future
-
-        StringBuilder outputMessage = new StringBuilder(
-                String.format(VIEW_MESSAGE, event.getParticipantCount(), eventName) + "\n");
-        int count = 1;
-        for (String participant : event.getParticipantList()) {
-            outputMessage.append(String.format("%d. %s\n", count , participant));
-            count++;
-        }
-
-        return new CommandOutput(outputMessage.toString(), false);
     }
 }
