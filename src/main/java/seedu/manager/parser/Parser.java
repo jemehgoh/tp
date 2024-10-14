@@ -72,10 +72,10 @@ public class Parser {
 
             if (commandFlag.equals("-e")) {
                 inputParts = input.split("(-e|-t|-v)");
-                return new AddCommand(inputParts[1], inputParts[2], inputParts[3]);
+                return new AddCommand(inputParts[1].trim(), inputParts[2].trim(), inputParts[3].trim());
             } else if (commandFlag.equals("-p")) {
                 inputParts = input.split("(-p|-e)");
-                return new AddCommand(inputParts[1], inputParts[2]);
+                return new AddCommand(inputParts[1].trim(), inputParts[2].trim());
             }
 
             return new InvalidCommand(INVALID_ADD_MESSAGE);
@@ -107,10 +107,10 @@ public class Parser {
 
             if (commandFlag.equals("-e")) {
                 inputParts = input.split("-e");
-                return new RemoveCommand(inputParts[1]);
+                return new RemoveCommand(inputParts[1].trim());
             } else if (commandFlag.equals("-p")) {
                 inputParts = input.split("(-p|-e)");
-                return new RemoveCommand(inputParts[1], inputParts[2]);
+                return new RemoveCommand(inputParts[1].trim(), inputParts[2].trim());
             }
 
             return new InvalidCommand(INVALID_REMOVE_MESSAGE);
