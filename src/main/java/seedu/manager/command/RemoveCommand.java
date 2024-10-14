@@ -1,5 +1,7 @@
 package seedu.manager.command;
 
+import seedu.manager.exception.ItemNotFoundException;
+
 /**
  * Represents a command to remove an event from the event list.
  * The remove command will search for an event by its name and remove it if found.
@@ -7,7 +9,6 @@ package seedu.manager.command;
 public class RemoveCommand extends Command {
     public static final String COMMAND_WORD = "remove";
     private static final String REMOVE_SUCCESS = "Removed successfully";
-    private static final String REMOVE_FAILURE = "Not found";
     protected String eventName;
     protected String participantName;
 
@@ -23,12 +24,12 @@ public class RemoveCommand extends Command {
     /**
      * Constructs a RemoveCommand object with the specified event name.
      *
-     * @param eventName The name of the event the participant is to be removed from.
      * @param participantName The name of the participant to be removed.
+     * @param eventName       The name of the event the participant is to be removed from.
      */
-    public RemoveCommand(String eventName, String participantName) {
-        this.eventName = eventName;
+    public RemoveCommand(String participantName, String eventName) {
         this.participantName = participantName;
+        this.eventName = eventName;
     }
 
     /**
@@ -46,18 +47,16 @@ public class RemoveCommand extends Command {
      */
     @Override
     public CommandOutput execute() {
-        boolean isRemoved;
+        try {
+            if (participantName == null) {
+                eventList.removeEvent(this.eventName);
+            } else {
+                eventList.removeParticipantFromEvent(this.participantName, this.eventName);
+            }
 
-        if (participantName == null) {
-            isRemoved = this.eventList.removeEvent(this.eventName);
-        } else {
-            isRemoved = this.eventList.removeParticipantFromEvent(this.participantName, this.eventName);
-        }
-
-        if (isRemoved) {
             return new CommandOutput(REMOVE_SUCCESS, false);
-        } else {
-            return new CommandOutput(REMOVE_FAILURE, false);
+        } catch (ItemNotFoundException exception) {
+            return new CommandOutput(exception.getMessage(), false);
         }
     }
 }

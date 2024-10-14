@@ -1,5 +1,7 @@
 package seedu.manager.event;
 
+import seedu.manager.exception.ItemNotFoundException;
+
 import java.util.ArrayList;
 
 
@@ -8,6 +10,8 @@ import java.util.ArrayList;
  * It provides methods to manage an event list.
  */
 public class EventList  {
+    private static final String MISSING_EVENT_MESSAGE = "Event not found!";
+
     private final ArrayList<Event> eventList;
 
     /**
@@ -62,17 +66,17 @@ public class EventList  {
      * Removes an event from the event list by its name.
      *
      * @param eventName the name of the event to be removed.
-     * @return {@code true} if the event was successfully removed;
-     *         {@code false} if no event with the specified name was found.
+     * @throws ItemNotFoundException if no event with the specified name was found.
      */
-    public boolean removeEvent(String eventName) {
+    public void removeEvent(String eventName) throws ItemNotFoundException {
         for (Event event : eventList) {
             if (event.getEventName().equals(eventName)) {
                 eventList.remove(event);
-                return true; // Event found and removed
+                return;
             }
         }
-        return false; // Event not found
+
+        throw new ItemNotFoundException(MISSING_EVENT_MESSAGE);
     }
 
     /**
@@ -97,21 +101,21 @@ public class EventList  {
      * This method searches for the event with the given name in the event list and
      * attempts to remove the specified participant from that event. If the event is
      * found and the participant is successfully removed, it returns {@code true}.
-     * If the event does not exist or the participant is not found, it returns
-     * {@code false}.
+     * If the event does not exist or the participant is not found, it throws an
+     * {@link ItemNotFoundException}.
      * </p>
      *
      * @param participantName the name of the participant to be removed from the event.
      * @param eventName      the name of the event from which the participant will be removed.
-     * @return {@code true} if the participant was successfully removed;
-     *         {@code false} if the event does not exist or the participant was not found.
+     * @throws ItemNotFoundException if the event does not exist or the participant was not found.
      */
-    public boolean removeParticipantFromEvent(String participantName, String eventName) {
+    public void removeParticipantFromEvent(String participantName, String eventName) throws ItemNotFoundException {
         for (Event event : eventList) {
             if (event.getEventName().equals(eventName)) {
-                return event.removeParticipant(participantName);
+                event.removeParticipant(participantName);
+                return;
             }
         }
-        return false;
+        throw new ItemNotFoundException(MISSING_EVENT_MESSAGE);
     }
 }

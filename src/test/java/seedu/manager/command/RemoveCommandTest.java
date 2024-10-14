@@ -2,13 +2,14 @@ package seedu.manager.command;
 
 import org.junit.jupiter.api.Test;
 import seedu.manager.event.EventList;
+import seedu.manager.exception.ItemNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RemoveCommandTest {
 
     @Test
-    public void remove_oneParticipant_success() {
+    public void remove_oneParticipant_success() throws ItemNotFoundException {
         EventList eventList = new EventList();
 
         eventList.addEvent("Event 1", "2024-10-10 10:00", "Venue A");
@@ -20,7 +21,7 @@ public class RemoveCommandTest {
     }
 
     @Test
-    public void remove_oneParticipantWrongly_success() {
+    public void remove_oneParticipantWrongly_success() throws ItemNotFoundException {
         EventList eventList = new EventList();
 
         eventList.addEvent("Event 1", "2024-10-10 10:00", "Venue A");

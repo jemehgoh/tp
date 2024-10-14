@@ -1,5 +1,7 @@
 package seedu.manager.event;
 
+import seedu.manager.exception.ItemNotFoundException;
+
 import java.util.ArrayList;
 
 /**
@@ -7,6 +9,8 @@ import java.util.ArrayList;
  * It provides methods to access and modify the time and venue of the event.
  */
 public class Event {
+    private static final String MISSING_PARTICIPANT_MESSAGE = "Participant not found!";
+
     protected ArrayList<String> participantList;
     private final String eventName;
     private String eventTime;
@@ -50,17 +54,19 @@ public class Event {
      *
      * <p>
      * This method attempts to remove the specified participant from the list of
-     * participants associated with the event. It returns {@code true} if the
-     * participant was successfully removed, and {@code false} if the participant
-     * was not found in the list.
+     * participants associated with the event. It throws an {@link ItemNotFoundException}
+     * if the participant was not found in the list.
      * </p>
      *
      * @param participantName the name of the participant to be removed from the list.
-     * @return {@code true} if the participant was successfully removed;
-     *         {@code false} if the participant was not found in the list.
+     * @throws ItemNotFoundException if the participant was not found in the list.
      */
-    public boolean removeParticipant(String participantName) {
-        return this.participantList.remove(participantName);
+    public void removeParticipant(String participantName) throws ItemNotFoundException {
+        boolean isRemoved = this.participantList.remove(participantName);
+
+        if (!isRemoved) {
+            throw new ItemNotFoundException(MISSING_PARTICIPANT_MESSAGE);
+        }
     }
 
     /**
