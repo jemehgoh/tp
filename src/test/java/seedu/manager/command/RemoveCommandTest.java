@@ -22,7 +22,7 @@ public class RemoveCommandTest {
     }
 
     @Test
-    public void remove_oneParticipantWrongly_throwException() throws ItemNotFoundException {
+    public void remove_oneParticipantWrongly_throwException() {
         EventList eventList = new EventList();
 
         eventList.addEvent("Event 1", "2024-10-10 10:00", "Venue A");
@@ -44,7 +44,7 @@ public class RemoveCommandTest {
     }
 
     @Test
-    public void remove_invalidEvent_throwsException() throws ItemNotFoundException {
+    public void remove_invalidEvent_throwsException() {
         EventList eventList = new EventList();
 
         assertThrows(ItemNotFoundException.class, () -> {eventList.removeEvent("Event 2");});
