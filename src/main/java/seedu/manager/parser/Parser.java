@@ -24,6 +24,10 @@ public class Parser {
             Please enter your commands in the following format:
             remove -e EVENT_NAME
             remove -p PARTICIPANT_NAME -e EVENT_NAME""";
+    private static final String INVALID_VIEW_MESSAGE = """
+            Invalid command!
+            Please enter your commands in the following format:
+            view -e EVENT_NAME""";
 
     /**
      * Returns a command based on the given user command string
@@ -147,9 +151,9 @@ public class Parser {
                 return new ViewCommand(inputParts[1].trim());
             }
 
-            return new InvalidCommand(INVALID_REMOVE_MESSAGE);
+            return new InvalidCommand(INVALID_VIEW_MESSAGE);
         } catch (IndexOutOfBoundsException exception) {
-            return new InvalidCommand(INVALID_REMOVE_MESSAGE);
+            return new InvalidCommand(INVALID_VIEW_MESSAGE);
         }
     }
 }
