@@ -3,7 +3,7 @@ package seedu.manager;
 import seedu.manager.command.Command;
 import seedu.manager.event.EventList;
 import seedu.manager.exception.InvalidCommandException;
-import seedu.manager.parser.Parser;
+import seedu.manager.parser.ParserManager;
 import seedu.manager.ui.Ui;
 import seedu.manager.storage.Storage;
 
@@ -38,7 +38,7 @@ public class Main {
         while (isGettingCommands){
             try {
                 String userCommandText = ui.getCommand();
-                command = new Parser().parseCommand(userCommandText);
+                command = new ParserManager().parseCommand(userCommandText);
                 command.setData(events);
                 command.execute();
                 ui.showOutputToUser(command);
