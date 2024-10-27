@@ -5,12 +5,13 @@ rectangle "parser" {
     rectangle "<<abstract>>\n   Parser"
     rectangle "ParserManager"
     rectangle "XYZCommandParser"
+    rectangle "ParameterFlags"
 }
 
 rectangle Main
 rectangle Command
 
-Main .> ParserManager
+Main ..> ParserManager
 
 "<<abstract>>\n   Parser" ..> Command
 "<<abstract>>\n   Parser" <|-- "XYZCommandParser"

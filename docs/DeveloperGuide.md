@@ -42,8 +42,10 @@ The logic of the `Parser` is as follows:
    * If the command has no parameters, it creates an `XYZCommand` associated with the word.
    * If the command has parameters, it creates an `XYZCommandParser` associated with the word.
 
-3. If an `XYZCommandParser` is created, it parses the command input based on the flags given, and creates an `XYZCommand` with the relevant parameters.
+3. If an `XYZCommandParser` is created, it parses the command input based on the command flags present, and creates an `XYZCommand` with the relevant parameters.
 4. The `ParserManager` passes the creates `XYZCommand` back to `Main` for execution.
+
+The `ParameterFlags` class acts as a storage class for the command flags used by `XYZCommandParser`.
 
 ## Implementation
 
