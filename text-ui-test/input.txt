@@ -2,13 +2,14 @@ hello world
 menu
 list
 add
-add -e dinner party -t 2024-10-10 -v Alice's House
+add -e dinner party -t 2024-10-10 12:34 -v Alice's House
 list
 mark -e dinner party -s done
 list
 mark -e Saturday brunch -s done
 add -p Mary -e dinner party
 view -e dinner party
-add -e anniversary celebration -t 2024-10-23 -v hotel
+add -e anniversary celebration -t 2024-10-23 12:34 -v hotel
 sort -by name
+sort -by time
 exit

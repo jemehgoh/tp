@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seedu.manager.event.EventList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -14,9 +17,12 @@ public class ListCommandTest {
     @BeforeEach
     public void setUp() {
         EventList eventList = new EventList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        eventList.addEvent("Event 1", "2024-10-10 10:00", "Venue A");
-        eventList.addEvent("Event 2", "2024-11-11 12:00", "Venue B");
+        eventList.addEvent("Event 1", LocalDateTime.parse("2024-10-10 10:00", formatter),
+                "Venue A");
+        eventList.addEvent("Event 2", LocalDateTime.parse("2024-11-11 12:00", formatter),
+                "Venue B");
 
         listCommand = new ListCommand();
         listCommand.setData(eventList);

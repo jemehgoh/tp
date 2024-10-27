@@ -1,5 +1,7 @@
 package seedu.manager.command;
 
+import java.time.LocalDateTime;
+
 //@@author KuanHsienn
 /**
  * Represents a command to add an event to the event list.
@@ -11,7 +13,7 @@ public class AddCommand extends Command {
     private static final String ADD_PARTICIPANT_MESSAGE = "Participant added successfully";
     private static final String ADD_FAILURE_MESSAGE = "Event not found!";
     protected String eventName;
-    protected String time;
+    protected LocalDateTime time;
     protected String venue;
     protected String participantName;
 
@@ -22,7 +24,7 @@ public class AddCommand extends Command {
      * @param time The time of the event to be added.
      * @param venue The venue of the event to be added.
      */
-    public AddCommand(String eventName, String time, String venue) {
+    public AddCommand(String eventName, LocalDateTime time, String venue) {
         super(false);
         this.eventName = eventName;
         this.time = time;

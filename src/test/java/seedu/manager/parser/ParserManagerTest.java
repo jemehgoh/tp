@@ -52,7 +52,7 @@ class ParserManagerTest {
     @Test
     public void addCommand_addEvent_add() {
         ParserManager parserManager = new ParserManager();
-        Command command = parserManager.parseCommand("add -e event -t 2024-09-10 -v Venue A");
+        Command command = parserManager.parseCommand("add -e event -t 2024-09-10 12:34 -v Venue A");
 
         assertInstanceOf(AddCommand.class, command);
     }

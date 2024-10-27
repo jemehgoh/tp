@@ -3,6 +3,9 @@ package seedu.manager.command;
 import org.junit.jupiter.api.Test;
 import seedu.manager.event.EventList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AddCommandTest {
@@ -10,16 +13,22 @@ public class AddCommandTest {
     @Test
     public void add_event_success() {
         EventList eventList = new EventList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        eventList.addEvent("Event 1", "2024-20-10 21:00", "Venue A");
+        eventList.addEvent("Event 1",
+                LocalDateTime.parse("2024-10-20 21:00", formatter),
+                "Venue A");
         assertEquals(1, eventList.getListSize());
     }
 
     @Test
     public void add_twoParticipant_success() {
         EventList eventList = new EventList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        eventList.addEvent("Event 1", "2024-10-10 10:00", "Venue A");
+        eventList.addEvent("Event 1",
+                LocalDateTime.parse("2024-10-10 10:00", formatter),
+                "Venue A");
         eventList.addParticipantToEvent("Tom", "Event 1");
         eventList.addParticipantToEvent("Harry", "Event 1");
 
@@ -29,8 +38,10 @@ public class AddCommandTest {
     @Test
     public void add_oneParticipantWrongly_success() {
         EventList eventList = new EventList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        eventList.addEvent("Event 1", "2024-10-10 10:00", "Venue A");
+        eventList.addEvent("Event 1", LocalDateTime.parse("2024-10-10 10:00", formatter),
+                "Venue A");
         eventList.addParticipantToEvent("Tom", "Event 1");
         eventList.addParticipantToEvent("Harry", "Event 2");
 

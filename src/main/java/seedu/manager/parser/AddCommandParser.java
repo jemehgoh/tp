@@ -4,6 +4,10 @@ import seedu.manager.command.AddCommand;
 import seedu.manager.command.Command;
 import seedu.manager.exception.InvalidCommandException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import static java.util.logging.Level.WARNING;
 
 //@@author KuanHsienn
@@ -16,6 +20,11 @@ public class AddCommandParser extends Parser {
             Please enter your commands in the following format:
             add -e EVENT -t TIME -v VENUE
             add -p PARTICIPANT -e EVENT""";
+    private static final String INVALID_DATE_TIME_MESSAGE = """
+            Invalid date-time format!
+            Please use the following format for event time:
+            YYYY-MM-DD HH:mm
+            """;
 
     /**
      * Returns an {@link AddCommand} based on the provided command parts and input string.
@@ -45,7 +54,9 @@ public class AddCommandParser extends Parser {
                 inputParts = input.split("(-e|-t|-v)");
                 LOGGER.info("Creating AddCommand for event with details: " +
                         inputParts[1].trim() + ", " + inputParts[2].trim() + ", " + inputParts[3].trim());
-                return new AddCommand(inputParts[1].trim(), inputParts[2].trim(), inputParts[3].trim());
+                LocalDateTime eventTime = LocalDateTime.parse(inputParts[2].trim(),
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                return new AddCommand(inputParts[1].trim(), eventTime, inputParts[3].trim());
             } else if (commandFlag.equals("-p")) {
                 inputParts = input.split("(-p|-e)");
                 LOGGER.info("Creating AddCommand for participant with details: " +
@@ -58,6 +69,9 @@ public class AddCommandParser extends Parser {
         } catch (IndexOutOfBoundsException exception) {
             LOGGER.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_ADD_MESSAGE);
+        }  catch (DateTimeParseException exception) {
+            LOGGER.log(WARNING,"Invalid date-time format");
+            throw new InvalidCommandException(INVALID_DATE_TIME_MESSAGE);
         }
     }
 }

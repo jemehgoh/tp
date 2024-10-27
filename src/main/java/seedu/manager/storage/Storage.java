@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //@@author KuanHsienn
 /**
@@ -15,6 +17,7 @@ import java.nio.file.Paths;
  */
 public class Storage {
     private final String filePath;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     /**
      * Constructs a Storage object with the given file path.
@@ -33,8 +36,10 @@ public class Storage {
      */
     public void saveEvents(EventList events) throws IOException {
         try (FileWriter writer = new FileWriter(filePath)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             for (Event event : events.getList()) {
-                writer.write(event.getEventName() + "," + event.getEventTime() + ","
+                String eventTimeString = formatter.format(event.getEventTime());
+                writer.write(event.getEventName() + "," + eventTimeString + ","
                         + event.getEventVenue() + "\n"); // Save event details in CSV format
             }
         } catch (IOException exception) {
@@ -53,7 +58,7 @@ public class Storage {
                 String[] parts = line.split(","); // CSV format
                 if (parts.length == 3) {
                     String eventName = parts[0].trim();
-                    String time = parts[1].trim();
+                    LocalDateTime time = LocalDateTime.parse(parts[1].trim(), formatter);
                     String venue = parts[2].trim();
                     events.addEvent(eventName, time, venue);
                 }

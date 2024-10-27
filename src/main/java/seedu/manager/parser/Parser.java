@@ -13,7 +13,7 @@ public abstract class Parser {
     /**
      * Returns a {@link Command} based on the given input string and command parts.
      *
-     * @param input the input string.
+     * @param input        the input string.
      * @param commandParts the command parts.
      * @return a {@link Command} based on the values of input and commandParts
      */
