@@ -6,8 +6,9 @@ import seedu.manager.exception.InvalidCommandException;
 
 import static java.util.logging.Level.WARNING;
 
+//@@author KuanHsienn
 /**
- * Represents a parser for the add command
+ * Represents the parser for the add command.
  */
 public class AddCommandParser extends Parser {
     private static final String INVALID_ADD_MESSAGE = """
@@ -16,9 +17,8 @@ public class AddCommandParser extends Parser {
             add -e EVENT -t TIME -v VENUE
             add -p PARTICIPANT -e EVENT""";
 
-    //@@author KuanHsienn
     /**
-     * Parses the input string to create an {@link Command} based on the provided command parts.
+     * Returns an {@link AddCommand} based on the provided command parts and input string.
      *
      * <p>
      * This method checks the command flag extracted from the command parts. If the command

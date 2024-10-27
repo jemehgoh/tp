@@ -6,15 +6,18 @@ import seedu.manager.exception.InvalidCommandException;
 
 import static java.util.logging.Level.WARNING;
 
+//@@author glenn-chew
+/**
+ * Represents the parser for the view command.
+ */
 public class ViewCommandParser extends Parser {
     private static final String INVALID_VIEW_MESSAGE = """
             Invalid command!
             Please enter your commands in the following format:
             view -e EVENT""";
 
-    //@@author glenn-chew
     /**
-     * Parses the input string to create a {@link Command} based on the provided command parts.
+     * Returns a {@link ViewCommand} based on the provided command parts and input string.
      *
      * <p>
      * This method checks the command flag extracted from the command parts. If the command

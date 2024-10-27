@@ -9,6 +9,10 @@ import seedu.manager.exception.InvalidCommandException;
 import static java.util.logging.Level.WARNING;
 
 //@@author jemehgoh
+
+/**
+ * Represents the parser for the mark command.
+ */
 public class MarkCommandParser extends Parser {
     private static final String INVALID_MARK_MESSAGE = """
             Invalid command!
@@ -25,7 +29,7 @@ public class MarkCommandParser extends Parser {
             """;
 
     /**
-     * Parses the input string to create a {@link Command} based on the provided command parts.
+     * Returns a {@link Command} based on the provided input string and command parts.
      *
      * <p>
      * This method checks the command flag extracted from the command parts. If the command
@@ -71,7 +75,7 @@ public class MarkCommandParser extends Parser {
      * @return a MarkCommand with a given event name and status
      * @throws InvalidCommandException if the given status is invalid.
      */
-    private Command getMarkEventCommand(String eventName, String status) throws InvalidCommandException {
+    private MarkEventCommand getMarkEventCommand(String eventName, String status) throws InvalidCommandException {
         if (status.equalsIgnoreCase("done")) {
             return new MarkEventCommand(eventName, true);
         } else if (status.equalsIgnoreCase("undone")) {
@@ -83,7 +87,7 @@ public class MarkCommandParser extends Parser {
     }
 
     /**
-     * Returns a {@link MarkCommand} with a given participant name, event name and status. If the given status is
+     * Returns a {@link MarkParticipantCommand} with a given participant name, event name and status. If the given status is
      *     invalid, throws an {@link InvalidCommandException}.
      *
      * @param participantName the given participant name.
@@ -92,7 +96,7 @@ public class MarkCommandParser extends Parser {
      * @return a MarkCommand with a given event name and status
      * @throws InvalidCommandException if the given status is invalid.
      */
-    private Command getMarkParticipantCommand(String participantName, String eventName, String status) {
+    private MarkParticipantCommand getMarkParticipantCommand(String participantName, String eventName, String status) {
         if (status.equalsIgnoreCase("present")) {
             return new MarkParticipantCommand(participantName, eventName, true);
         } else if (status.equalsIgnoreCase("absent")) {

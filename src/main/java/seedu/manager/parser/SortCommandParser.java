@@ -9,6 +9,10 @@ import java.util.Set;
 import static java.util.logging.Level.WARNING;
 
 //@@author MatchaRRR
+
+/**
+ * Represents the parser for the sort command.
+ */
 public class SortCommandParser extends Parser {
     private static final String INVALID_SORT_MESSAGE = """
             Invalid command!
@@ -21,7 +25,7 @@ public class SortCommandParser extends Parser {
             """;
 
     /**
-     * Parses the input string to create a {@link Command} based on the provided command parts.
+     * Returns a {@link SortCommand} based on the provided command parts and input string.
      *
      * <p>
      * This method checks the command flag extracted from the command parts. If the command

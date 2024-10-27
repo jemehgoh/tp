@@ -12,7 +12,7 @@ import seedu.manager.command.SortCommand;
 import seedu.manager.exception.InvalidCommandException;
 
 /**
- * Represents the manager for the command parsers in EventManagerCLI
+ * Represents the manager for the command parsers in EventManagerCLI.
  */
 public class ParserManager {
     private static final String INVALID_COMMAND_MESSAGE = "Invalid command!";

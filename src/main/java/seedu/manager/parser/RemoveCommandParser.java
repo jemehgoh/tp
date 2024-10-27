@@ -7,7 +7,7 @@ import seedu.manager.exception.InvalidCommandException;
 import static java.util.logging.Level.WARNING;
 
 /**
- * Represents the parser for the remove command
+ * Represents the parser for the remove command.
  */
 public class RemoveCommandParser extends Parser {
     private static final String INVALID_REMOVE_MESSAGE = """
@@ -18,7 +18,7 @@ public class RemoveCommandParser extends Parser {
 
     //@@author LTK-1606
     /**
-     * Parses the input string to create a {@link Command} based on the provided command parts.
+     * Returns an {@link RemoveCommand} based on the provided command parts and input string.
      *
      * <p>
      * This method checks the command flag extracted from the command parts. If the command
