@@ -34,11 +34,8 @@ public class AddCommandParser extends Parser {
      * Returns an {@link AddCommand} based on the provided command parts and input string.
      *
      * <p>
-     * This method checks the command flag extracted from the command parts. If the command
-     * flag is {@code "-e"}, it splits the input string into parts to create an
-     * {@link AddCommand} for adding an event. If the command flag is {@code "-p"},
-     * it creates an {@link AddCommand} for adding a participant to an event. If neither
-     * flag is matched, it throws a {@link InvalidCommandException} with an error message.
+     * The returned {@link AddCommand} either adds an event or a participant based on the
+     *         command flag in the command parts.
      * </p>
      *
      * @param input        the input string containing the command details.
@@ -52,20 +49,11 @@ public class AddCommandParser extends Parser {
         assert commandParts[0].equalsIgnoreCase(AddCommand.COMMAND_WORD);
         try {
             String commandFlag = commandParts[1];
-            String[] inputParts;
 
             if (commandFlag.equals(ParameterFlags.EVENT_FLAG)) {
-                inputParts = input.split(FLAGS_ADD_EVENT);
-                LOGGER.info("Creating AddCommand for event with details: " +
-                        inputParts[1].trim() + ", " + inputParts[2].trim() + ", " + inputParts[3].trim());
-                LocalDateTime eventTime = LocalDateTime.parse(inputParts[2].trim(),
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-                return new AddCommand(inputParts[1].trim(), eventTime, inputParts[3].trim());
+                return getAddEventCommand(input);
             } else if (commandFlag.equals(ParameterFlags.PARTICIPANT_FLAG)) {
-                inputParts = input.split(FLAGS_ADD_PARTICIPANT);
-                LOGGER.info("Creating AddCommand for participant with details: " +
-                        inputParts[1].trim() + ", " + inputParts[2].trim());
-                return new AddCommand(inputParts[1].trim(), inputParts[2].trim());
+                return getAddParticipantCommand(input);
             }
 
             LOGGER.log(WARNING,"Invalid command format");
@@ -73,9 +61,43 @@ public class AddCommandParser extends Parser {
         } catch (IndexOutOfBoundsException exception) {
             LOGGER.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_ADD_MESSAGE);
-        }  catch (DateTimeParseException exception) {
+        } catch (DateTimeParseException exception) {
             LOGGER.log(WARNING,"Invalid date-time format");
             throw new InvalidCommandException(INVALID_DATE_TIME_MESSAGE);
         }
+    }
+
+    /**
+     * Returns an {@link AddCommand} to add an event based on the given input.
+     *
+     * @param input the given input.
+     * @return an {@link AddCommand} with attributes based on the fields in the input.
+     * @throws IndexOutOfBoundsException if not all fields are present.
+     * @throws DateTimeParseException if the date-time data cannot be parsed.
+     */
+    private AddCommand getAddEventCommand(String input) throws IndexOutOfBoundsException, DateTimeParseException {
+        String[] inputParts = input.split(FLAGS_ADD_EVENT);
+        String eventName = inputParts[1].trim();
+        LocalDateTime eventTime = LocalDateTime.parse(inputParts[2].trim(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        String eventVenue = inputParts[3].trim();
+
+        LOGGER.info("Creating AddCommand for event with details: " +
+                eventName + ", " + inputParts[2].trim() + ", " + eventVenue);
+        return new AddCommand(eventName, eventTime, eventVenue);
+    }
+
+    /**
+     * Returns an {@link AddCommand} to add a participant to an event based on the given input.
+     *
+     * @param input the given input.
+     * @return an {@link AddCommand} with attributes based on the fields in the input.
+     * @throws IndexOutOfBoundsException if not all fields are present.
+     */
+    private AddCommand getAddParticipantCommand(String input) throws IndexOutOfBoundsException {
+        String[] inputParts = input.split(FLAGS_ADD_PARTICIPANT);
+        LOGGER.info("Creating AddCommand for participant with details: " +
+                inputParts[1].trim() + ", " + inputParts[2].trim());
+        return new AddCommand(inputParts[1].trim(), inputParts[2].trim());
     }
 }

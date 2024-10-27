@@ -23,11 +23,8 @@ public class RemoveCommandParser extends Parser {
      * Returns an {@link RemoveCommand} based on the provided command parts and input string.
      *
      * <p>
-     * This method checks the command flag extracted from the command parts. If the command
-     * flag is {@code "-e"}, it splits the input string to create a {@link RemoveCommand}
-     * for removing an event. If the command flag is {@code "-p"}, it creates a
-     * {@link RemoveCommand} for removing a participant from an event. If neither flag
-     * is matched, it throws an {@link InvalidCommandException} with an error message.
+     * The returned {@link RemoveCommand} either removes an event or a participant, based on the
+     *         command flag in the command parts.
      * </p>
      *
      * @param input        the input string containing the command details.
@@ -41,14 +38,11 @@ public class RemoveCommandParser extends Parser {
         assert commandParts[0].equalsIgnoreCase(RemoveCommand.COMMAND_WORD);
         try {
             String commandFlag = commandParts[1];
-            String[] inputParts;
 
             if (commandFlag.equals(ParameterFlags.EVENT_FLAG)) {
-                inputParts = input.split(ParameterFlags.EVENT_FLAG);
-                return new RemoveCommand(inputParts[1].trim());
+                return getRemoveEventCommand(input);
             } else if (commandFlag.equals(ParameterFlags.PARTICIPANT_FLAG)) {
-                inputParts = input.split(FLAGS_REMOVE_PARTICIPANT);
-                return new RemoveCommand(inputParts[1].trim(), inputParts[2].trim());
+                return getRemoveParticipantCommand(input);
             }
 
             LOGGER.log(WARNING,"Invalid command format");
@@ -57,5 +51,29 @@ public class RemoveCommandParser extends Parser {
             LOGGER.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_REMOVE_MESSAGE);
         }
+    }
+
+    /**
+     * Returns a {@link RemoveCommand} to remove an event based on the given input string.
+     *
+     * @param input the given input string.
+     * @return a {@link RemoveCommand} to remove an event with fields parsed from input.
+     * @throws IndexOutOfBoundsException if not all fields are present in put.
+     */
+    private RemoveCommand getRemoveEventCommand(String input) throws IndexOutOfBoundsException {
+        String[] inputParts = input.split(ParameterFlags.EVENT_FLAG);
+        return new RemoveCommand(inputParts[1].trim());
+    }
+
+    /**
+     * Returns a {@link RemoveCommand} to remove a participant based on the given input string.
+     *
+     * @param input the given input string.
+     * @return a {@link RemoveCommand} to remove a participant with fields parsed from input.
+     * @throws IndexOutOfBoundsException if not all fields are present in input.
+     */
+    private RemoveCommand getRemoveParticipantCommand(String input) throws IndexOutOfBoundsException {
+        String[] inputParts = input.split(FLAGS_REMOVE_PARTICIPANT);
+        return new RemoveCommand(inputParts[1].trim(), inputParts[2].trim());
     }
 }
