@@ -1,5 +1,6 @@
 package seedu.manager.parser;
 
+//@@author jemehgoh
 /**
  * Represents a storage class for the command flags used by the parsers
  */

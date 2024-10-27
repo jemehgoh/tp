@@ -18,13 +18,8 @@ public class ViewCommandParser extends Parser {
 
     /**
      * Returns a {@link ViewCommand} based on the provided command parts and input string.
-     *
-     * <p>
-     * This method checks the command flag extracted from the command parts. If the command
-     * flag is {@code "-e"}, it splits the input string to create a {@link ViewCommand}
-     * for viewing the participants in the event.
-     * Otherwise, it throws an {@link InvalidCommandException} with an error message.
-     * </p>
+     *         Throws an {@link InvalidCommandException} with an error message if the command flag or any
+     *         fields are absent.
      *
      * @param input        the input string containing the command details.
      * @param commandParts an array of strings representing the parsed command parts,
@@ -39,8 +34,7 @@ public class ViewCommandParser extends Parser {
             String commandFlag = commandParts[1];
 
             if (commandFlag.equals(ParameterFlags.EVENT_FLAG)) {
-                String[] inputParts = input.split(ParameterFlags.EVENT_FLAG);
-                return new ViewCommand(inputParts[1].trim());
+                return getViewCommand(input);
             }
 
             LOGGER.log(WARNING,"Invalid command format");
@@ -49,5 +43,17 @@ public class ViewCommandParser extends Parser {
             LOGGER.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_VIEW_MESSAGE);
         }
+    }
+
+    /**
+     * Returns a {@link ViewCommand} based on a given command input.
+     *
+     * @param input the given command input.
+     * @return a {@link ViewCommand} with parameters parsed from fields in input.
+     * @throws IndexOutOfBoundsException if not all fields are found.
+     */
+    private ViewCommand getViewCommand(String input) throws IndexOutOfBoundsException {
+        String[] inputParts = input.split(ParameterFlags.EVENT_FLAG);
+        return new ViewCommand(inputParts[1].trim());
     }
 }

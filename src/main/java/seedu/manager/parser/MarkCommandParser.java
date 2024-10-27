@@ -54,11 +54,9 @@ public class MarkCommandParser extends Parser {
             String commandFlag = commandParts[1];
 
             if (commandFlag.equalsIgnoreCase(ParameterFlags.EVENT_FLAG)) {
-                String[] inputParts = input.split(FLAGS_MARK_EVENT);
-                return getMarkEventCommand(inputParts[1].trim(), inputParts[2].trim());
+                return getMarkEventCommand(input);
             } else if (commandFlag.equalsIgnoreCase(ParameterFlags.PARTICIPANT_FLAG)) {
-                String[] inputParts = input.split(FLAGS_MARK_PARTICIPANT);
-                return getMarkParticipantCommand(inputParts[1].trim(), inputParts[2].trim(), inputParts[3].trim());
+                return getMarkParticipantCommand(input);
             }
 
             LOGGER.log(WARNING,"Invalid command format");
@@ -70,40 +68,65 @@ public class MarkCommandParser extends Parser {
     }
 
     /**
-     * Returns a {@link MarkEventCommand} with a given event name and status. If the given status is invalid,
-     *     throws an {@link InvalidCommandException}.
+     * Returns a {@link MarkEventCommand} with a given command input.
      *
-     * @param eventName the given event name.
-     * @param status the given event status.
-     * @return a MarkCommand with a given event name and status
-     * @throws InvalidCommandException if the given status is invalid.
+     * @param input the command input.
+     * @return a {@link MarkEventCommand}, with attributes parsed from fields in input.
+     * @throws InvalidCommandException if the status field in input is invalid.
+     * @throws IndexOutOfBoundsException if not all fields are present.
      */
-    private MarkEventCommand getMarkEventCommand(String eventName, String status) throws InvalidCommandException {
+    private MarkEventCommand getMarkEventCommand(String input) throws InvalidCommandException,
+            IndexOutOfBoundsException {
+        String[] inputParts = input.split(FLAGS_MARK_EVENT);
+        boolean toMark = getMarkEventStatus(inputParts[2].trim());
+        return new MarkEventCommand(inputParts[1].trim(), toMark);
+    }
+
+    /**
+     * Returns a {@link MarkParticipantCommand} with a given command input.
+     *
+     * @param input the command input.
+     * @return a {@link MarkParticipantCommand}, with attributes parsed from fields in input.
+     * @throws InvalidCommandException if the status field in input is invalid.
+     * @throws IndexOutOfBoundsException if not all fields are present.
+     */
+    private MarkParticipantCommand getMarkParticipantCommand(String input) throws InvalidCommandException,
+            IndexOutOfBoundsException {
+        String[] inputParts = input.split(FLAGS_MARK_PARTICIPANT);
+        boolean toMark = getMarkParticipantStatus(inputParts[3].trim());
+        return new MarkParticipantCommand(inputParts[1].trim(), inputParts[2].trim(), toMark);
+    }
+
+    /**
+     * Returns true if status is "done", false if status is "undone". Throws an InvalidCommandException otherwise.
+     *
+     * @param status the status keyword
+     * @return true if status is "done", false if status is "undone".
+     * @throws InvalidCommandException if status is neither "done" nor "undone".
+     */
+    private boolean getMarkEventStatus(String status) throws InvalidCommandException {
         if (status.equalsIgnoreCase("done")) {
-            return new MarkEventCommand(eventName, true);
+            return true;
         } else if (status.equalsIgnoreCase("undone")) {
-            return new MarkEventCommand(eventName, false);
+            return false;
         } else {
-            LOGGER.log(WARNING,"Invalid status keyword");
+            LOGGER.log(WARNING, "Invalid status keyword");
             throw new InvalidCommandException(INVALID_EVENT_STATUS_MESSAGE);
         }
     }
 
     /**
-     * Returns a {@link MarkParticipantCommand} with a given participant name, event name and status.
-     *     If the given status is invalid, throws an {@link InvalidCommandException}.
+     * Returns true if status is "present", false if status is "absent". Throws an InvalidCommandException otherwise.
      *
-     * @param participantName the given participant name.
-     * @param eventName the given event name.
-     * @param status the given event status.
-     * @return a MarkCommand with a given event name and status
-     * @throws InvalidCommandException if the given status is invalid.
+     * @param status the status keyword
+     * @return true if status is "present", false if status is "absent".
+     * @throws InvalidCommandException if status is neither "present" nor "absent".
      */
-    private MarkParticipantCommand getMarkParticipantCommand(String participantName, String eventName, String status) {
+    private boolean getMarkParticipantStatus(String status) throws InvalidCommandException {
         if (status.equalsIgnoreCase("present")) {
-            return new MarkParticipantCommand(participantName, eventName, true);
+            return true;
         } else if (status.equalsIgnoreCase("absent")) {
-            return new MarkParticipantCommand(participantName, eventName, false);
+            return false;
         } else {
             LOGGER.log(WARNING, "Invalid status keyword");
             throw new InvalidCommandException(INVALID_PARTICIPANT_STATUS_MESSAGE);
