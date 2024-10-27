@@ -10,6 +10,8 @@ import static java.util.logging.Level.WARNING;
  * Represents the parser for the remove command.
  */
 public class RemoveCommandParser extends Parser {
+    private static final String FLAGS_REMOVE_PARTICIPANT = String.format("(%s|%s)", ParameterFlags.PARTICIPANT_FLAG,
+            ParameterFlags.EVENT_FLAG);
     private static final String INVALID_REMOVE_MESSAGE = """
             Invalid command!
             Please enter your commands in the following format:
@@ -41,11 +43,11 @@ public class RemoveCommandParser extends Parser {
             String commandFlag = commandParts[1];
             String[] inputParts;
 
-            if (commandFlag.equals("-e")) {
-                inputParts = input.split("-e");
+            if (commandFlag.equals(ParameterFlags.EVENT_FLAG)) {
+                inputParts = input.split(ParameterFlags.EVENT_FLAG);
                 return new RemoveCommand(inputParts[1].trim());
-            } else if (commandFlag.equals("-p")) {
-                inputParts = input.split("(-p|-e)");
+            } else if (commandFlag.equals(ParameterFlags.PARTICIPANT_FLAG)) {
+                inputParts = input.split(FLAGS_REMOVE_PARTICIPANT);
                 return new RemoveCommand(inputParts[1].trim(), inputParts[2].trim());
             }
 

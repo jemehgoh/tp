@@ -42,7 +42,7 @@ public class SortCommandParser extends Parser {
     public Command parse(String input, String[] commandParts) throws InvalidCommandException{
         assert commandParts[0].equalsIgnoreCase(SortCommand.COMMAND_WORD);
         try {
-            String[] inputParts = input.split("-by", 2);
+            String[] inputParts = input.split(ParameterFlags.KEYWORD_FLAG, 2);
             if (inputParts.length < 2) {
                 throw new InvalidCommandException(INVALID_SORT_MESSAGE);
             }

@@ -9,11 +9,14 @@ import seedu.manager.exception.InvalidCommandException;
 import static java.util.logging.Level.WARNING;
 
 //@@author jemehgoh
-
 /**
  * Represents the parser for the mark command.
  */
 public class MarkCommandParser extends Parser {
+    private static final String FLAGS_MARK_EVENT = String.format("%s|%s", ParameterFlags.EVENT_FLAG,
+            ParameterFlags.STATUS_FLAG);
+    private static final String FLAGS_MARK_PARTICIPANT = String.format("%s|%s|%s", ParameterFlags.PARTICIPANT_FLAG,
+            ParameterFlags.EVENT_FLAG, ParameterFlags.STATUS_FLAG);
     private static final String INVALID_MARK_MESSAGE = """
             Invalid command!
             Please enter your commands in the following format:
@@ -50,11 +53,11 @@ public class MarkCommandParser extends Parser {
         try {
             String commandFlag = commandParts[1];
 
-            if (commandFlag.equalsIgnoreCase("-e")) {
-                String[] inputParts = input.split("-e|-s");
+            if (commandFlag.equalsIgnoreCase(ParameterFlags.EVENT_FLAG)) {
+                String[] inputParts = input.split(FLAGS_MARK_EVENT);
                 return getMarkEventCommand(inputParts[1].trim(), inputParts[2].trim());
-            } else if (commandFlag.equalsIgnoreCase("-p")) {
-                String[] inputParts = input.split("-p|-e|-s");
+            } else if (commandFlag.equalsIgnoreCase(ParameterFlags.PARTICIPANT_FLAG)) {
+                String[] inputParts = input.split(FLAGS_MARK_PARTICIPANT);
                 return getMarkParticipantCommand(inputParts[1].trim(), inputParts[2].trim(), inputParts[3].trim());
             }
 

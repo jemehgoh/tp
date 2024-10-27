@@ -38,8 +38,8 @@ public class ViewCommandParser extends Parser {
         try {
             String commandFlag = commandParts[1];
 
-            if (commandFlag.equals("-e")) {
-                String [] inputParts = input.split("-e");
+            if (commandFlag.equals(ParameterFlags.EVENT_FLAG)) {
+                String[] inputParts = input.split(ParameterFlags.EVENT_FLAG);
                 return new ViewCommand(inputParts[1].trim());
             }
 

@@ -15,6 +15,10 @@ import static java.util.logging.Level.WARNING;
  * Represents the parser for the add command.
  */
 public class AddCommandParser extends Parser {
+    private static final String FLAGS_ADD_EVENT = String.format("(%s|%s|%s)", ParameterFlags.EVENT_FLAG,
+            ParameterFlags.TIME_FLAG, ParameterFlags.VENUE_FLAG);
+    private static final String FLAGS_ADD_PARTICIPANT = String.format("(%s|%s)", ParameterFlags.PARTICIPANT_FLAG,
+            ParameterFlags.EVENT_FLAG);
     private static final String INVALID_ADD_MESSAGE = """
             Invalid command!
             Please enter your commands in the following format:
@@ -50,15 +54,15 @@ public class AddCommandParser extends Parser {
             String commandFlag = commandParts[1];
             String[] inputParts;
 
-            if (commandFlag.equals("-e")) {
-                inputParts = input.split("(-e|-t|-v)");
+            if (commandFlag.equals(ParameterFlags.EVENT_FLAG)) {
+                inputParts = input.split(FLAGS_ADD_EVENT);
                 LOGGER.info("Creating AddCommand for event with details: " +
                         inputParts[1].trim() + ", " + inputParts[2].trim() + ", " + inputParts[3].trim());
                 LocalDateTime eventTime = LocalDateTime.parse(inputParts[2].trim(),
                         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 return new AddCommand(inputParts[1].trim(), eventTime, inputParts[3].trim());
-            } else if (commandFlag.equals("-p")) {
-                inputParts = input.split("(-p|-e)");
+            } else if (commandFlag.equals(ParameterFlags.PARTICIPANT_FLAG)) {
+                inputParts = input.split(FLAGS_ADD_PARTICIPANT);
                 LOGGER.info("Creating AddCommand for participant with details: " +
                         inputParts[1].trim() + ", " + inputParts[2].trim());
                 return new AddCommand(inputParts[1].trim(), inputParts[2].trim());
