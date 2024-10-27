@@ -87,8 +87,8 @@ public class MarkCommandParser extends Parser {
     }
 
     /**
-     * Returns a {@link MarkParticipantCommand} with a given participant name, event name and status. If the given status is
-     *     invalid, throws an {@link InvalidCommandException}.
+     * Returns a {@link MarkParticipantCommand} with a given participant name, event name and status.
+     *     If the given status is invalid, throws an {@link InvalidCommandException}.
      *
      * @param participantName the given participant name.
      * @param eventName the given event name.
