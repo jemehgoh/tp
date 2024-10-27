@@ -22,7 +22,6 @@ Enter a command: Invalid command!
 Please enter your commands in the following format:
 add -e EVENT -t TIME -v VENUE
 add -p PARTICIPANT -e EVENT
-
 ------------------------
 Enter a command: Event added successfully
 ------------------------
