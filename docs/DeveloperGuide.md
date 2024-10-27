@@ -28,6 +28,23 @@ The above *Sequence Diagram* shows how the different components of the system in
 another in the scenario when the command `add -e event -t 1200 -v venue` is executed.
 
 
+### Parser component
+
+The component classes and dependent components of the `Parser` are as shown in the _Class Diagram_ below:
+
+<img src = "images/ParserClassDiagram.png">
+
+The logic of the `Parser` is as follows:
+
+1. Upon receiving a user command, `Main` creates a `ParserManager`.
+2. The `ParserManager`, based on the first word of the user command, does the following:
+
+   * If the command has no parameters, it creates an `XYZCommand` associated with the word.
+   * If the command has parameters, it creates an `XYZCommandParser` associated with the word.
+
+3. If an `XYZCommandParser` is created, it parses the command input based on the flags given, and creates an `XYZCommand` with the relevant parameters.
+4. The `ParserManager` passes the creates `XYZCommand` back to `Main` for execution.
+
 ## Implementation
 
 This section describes some noteworthy details on how certain features are implemented.

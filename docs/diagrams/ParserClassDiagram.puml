@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+rectangle "parser" {
+    rectangle "<<abstract>>\n   Parser"
+    rectangle "ParserManager"
+    rectangle "XYZCommandParser"
+}
+
+rectangle Main
+rectangle Command
+
+Main .> ParserManager
+
+"<<abstract>>\n   Parser" ..> Command
+"<<abstract>>\n   Parser" <|-- "XYZCommandParser"
+ParserManager ...> Command
+ParserManager ...> XYZCommandParser
+
+@enduml
