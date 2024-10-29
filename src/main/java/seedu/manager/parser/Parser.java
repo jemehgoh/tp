@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  * Represents the command parser for EventManagerCLI.
  */
 public abstract class Parser {
-    protected static final Logger LOGGER = Logger.getLogger(Parser.class.getName());
+    protected final Logger logger = Logger.getLogger(Parser.class.getName());
 
     /**
      * Returns a {@link Command} based on the given input string and command parts.

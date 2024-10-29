@@ -11,6 +11,7 @@ public class SortCommand extends Command {
 
     private static final String SORT_BY_NAME_MESSAGE = "Events successfully sorted by name!";
     private static final String SORT_BY_TIME_MESSAGE = "Events successfully sorted by time!";
+    private static final String SORT_BY_PRIORITY_MESSAGE = "Events successfully sorted by priority level!";
 
     protected String keyword;
 
@@ -43,6 +44,8 @@ public class SortCommand extends Command {
             outputMessage.append(SORT_BY_TIME_MESSAGE + "\n");
             break;
         case "priority":
+            sortedEventList.sortByPriority();
+            outputMessage.append(SORT_BY_PRIORITY_MESSAGE + "\n");
             break;
         default:
         }

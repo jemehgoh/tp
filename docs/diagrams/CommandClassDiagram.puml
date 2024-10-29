@@ -1,0 +1,24 @@
+@startuml
+!include style.puml
+'https://plantuml.com/class-diagram
+
+rectangle command {
+    rectangle "<<abstract>>\n Command" COMMAND_COLOUR
+
+    rectangle XYZCommand COMMAND_COLOUR
+}
+
+rectangle Main
+rectangle Parser PARSER_COLOUR
+rectangle Event EVENT_COLOUR
+rectangle Ui UI_COLOUR
+
+"<<abstract>>\n Command" <|-- XYZCommand
+
+Main .> "<<abstract>>\n Command"
+Parser .> "<<abstract>>\n Command"
+"<<abstract>>\n Command" <.. Ui
+"<<abstract>>\n Command" ...> Event
+
+
+@enduml

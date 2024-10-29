@@ -2,6 +2,7 @@ package seedu.manager.command;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seedu.manager.enumeration.Priority;
 import seedu.manager.event.EventList;
 
 import java.time.LocalDateTime;
@@ -20,9 +21,9 @@ public class ListCommandTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         eventList.addEvent("Event 1", LocalDateTime.parse("2024-10-10 10:00", formatter),
-                "Venue A");
+                "Venue A", Priority.HIGH);
         eventList.addEvent("Event 2", LocalDateTime.parse("2024-11-11 12:00", formatter),
-                "Venue B");
+                "Venue B", Priority.MEDIUM);
 
         listCommand = new ListCommand();
         listCommand.setData(eventList);
@@ -32,8 +33,10 @@ public class ListCommandTest {
     @Test
     public void execute_twoEvents_success() {
         String expectedMessage = "There are 2 events in your list! Here are your scheduled events:\n"
-                + "1. Event name: Event 1 / Event time: 2024-10-10 10:00 / Event venue: Venue A / Done: N\n"
-                + "2. Event name: Event 2 / Event time: 2024-11-11 12:00 / Event venue: Venue B / Done: N\n";
+                + "1. Event name: Event 1 / Event time: 2024-10-10 10:00 / Event venue: Venue A / " +
+                "Event Priority: HIGH / Done: N\n"
+                + "2. Event name: Event 2 / Event time: 2024-11-11 12:00 / Event venue: Venue B / " +
+                "Event Priority: MEDIUM / Done: N\n";
 
         assertEquals(expectedMessage, listCommand.getMessage());
         assertFalse(listCommand.getCanExit());

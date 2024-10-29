@@ -1,5 +1,6 @@
 package seedu.manager.storage;
 
+import seedu.manager.enumeration.Priority;
 import seedu.manager.event.EventList;
 import seedu.manager.event.Event;
 
@@ -26,6 +27,7 @@ public class StorageTest {
 
     @BeforeEach
     public void setUp() {
+        System.setProperty("test.environment", "true"); // Set the system property for testing
         storage = new Storage(TEST_FILE_PATH);
         eventList = new EventList();
     }
@@ -55,8 +57,8 @@ public class StorageTest {
         try {
             java.nio.file.Files.writeString(
                     java.nio.file.Paths.get(TEST_FILE_PATH),
-                    "Meeting,2024-10-25 10:00,Conference Room\n" +
-                            "Workshop,2024-10-26 14:00,Main Hall\n"
+                    "Meeting,2024-10-25 10:00,Conference Room,HIGH\n" +
+                            "Workshop,2024-10-26 14:00,Main Hall,MEDIUM\n"
             );
         } catch (IOException exception) {
             fail("Failed to set up the test data file: " + exception.getMessage());
@@ -85,9 +87,9 @@ public class StorageTest {
     public void testSaveEvents() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         eventList.addEvent("Meeting", LocalDateTime.parse("2024-10-25 10:00", formatter),
-                "Conference Room");
+                "Conference Room", Priority.HIGH);
         eventList.addEvent("Workshop", LocalDateTime.parse("2024-10-26 14:00", formatter),
-                "Main Hall");
+                "Main Hall", Priority.MEDIUM);
 
         try {
             storage.saveEvents(eventList);
@@ -100,8 +102,8 @@ public class StorageTest {
 
         try {
             String content = new String(java.nio.file.Files.readAllBytes(file.toPath()));
-            String expectedContent = "Meeting,2024-10-25 10:00,Conference Room\n"
-                    + "Workshop,2024-10-26 14:00,Main Hall\n";
+            String expectedContent = "Meeting,2024-10-25 10:00,Conference Room,HIGH\n"
+                    + "Workshop,2024-10-26 14:00,Main Hall,MEDIUM\n";
             assertEquals(expectedContent, content, "The file content does not match the expected output.");
         } catch (IOException exception) {
             fail("Exception should not be thrown when reading the saved file: " + exception.getMessage());

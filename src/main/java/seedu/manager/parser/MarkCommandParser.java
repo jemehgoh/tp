@@ -59,10 +59,10 @@ public class MarkCommandParser extends Parser {
                 return getMarkParticipantCommand(input);
             }
 
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_MARK_MESSAGE);
         } catch (IndexOutOfBoundsException exception) {
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_MARK_MESSAGE);
         }
     }
@@ -110,7 +110,7 @@ public class MarkCommandParser extends Parser {
         } else if (status.equalsIgnoreCase("undone")) {
             return false;
         } else {
-            LOGGER.log(WARNING, "Invalid status keyword");
+            logger.log(WARNING, "Invalid status keyword");
             throw new InvalidCommandException(INVALID_EVENT_STATUS_MESSAGE);
         }
     }
@@ -128,7 +128,7 @@ public class MarkCommandParser extends Parser {
         } else if (status.equalsIgnoreCase("absent")) {
             return false;
         } else {
-            LOGGER.log(WARNING, "Invalid status keyword");
+            logger.log(WARNING, "Invalid status keyword");
             throw new InvalidCommandException(INVALID_PARTICIPANT_STATUS_MESSAGE);
         }
     }

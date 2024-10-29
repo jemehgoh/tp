@@ -52,7 +52,7 @@ class ParserManagerTest {
     @Test
     public void addCommand_addEvent_add() {
         ParserManager parserManager = new ParserManager();
-        Command command = parserManager.parseCommand("add -e event -t 2024-09-10 12:34 -v Venue A");
+        Command command = parserManager.parseCommand("add -e event -t 2024-09-10 12:34 -v Venue A -u high");
 
         assertInstanceOf(AddCommand.class, command);
     }
@@ -153,4 +153,59 @@ class ParserManagerTest {
         assertThrows(InvalidCommandException.class,() -> {
             parserManager.parseCommand(commandString);});
     }
+
+    @Test
+    public void parseCommand_copyCommandInvalidFlags_throwsException() {
+        ParserManager parser = new ParserManager();
+        String commandString = "copy tutorial < lecture";
+  
+        assertThrows(InvalidCommandException.class,() -> {
+            parser.parseCommand(commandString);});
+    }
+
+    @Test
+    public void parseCommand_findCommandInvalidFlags_throwsException() {
+        ParserManager parser = new ParserManager();
+        String commandString = "find -s event 1 -p doe";
+      
+        assertThrows(InvalidCommandException.class,() -> {
+            parser.parseCommand(commandString);});
+    }
+  
+    @Test
+    public void parseCommand_findCommandInvalidInput_throwsException() {
+        ParserManager parser = new ParserManager();
+        String commandString = "find -e -p doe";
+      
+        assertThrows(InvalidCommandException.class,() -> {
+            parser.parseCommand(commandString);});
+    }
+
+    @Test
+    public void parseCommand_filterEventsInvalidFlag_throwsException() {
+        ParserManager parser = new ParserManager();
+        String commandString = "filter -s high";
+      
+        assertThrows(InvalidCommandException.class,() -> {
+            parser.parseCommand(commandString);});
+    }
+        
+    @Test
+    public void parseCommand_sortEventsInvalidFlags_throwsException() {
+        ParserManager parser = new ParserManager();
+        String commandString = "sort by name";
+      
+        assertThrows(InvalidCommandException.class,() -> {
+            parser.parseCommand(commandString);});
+    }
+
+    @Test
+    public void parseCommand_sortEventsInvalidInput_throwsException() {
+        ParserManager parser = new ParserManager();
+        String commandString = "sort -by fun";
+      
+        assertThrows(InvalidCommandException.class, () -> {
+            parser.parseCommand(commandString);});
+    }
+
 }

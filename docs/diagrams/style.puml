@@ -1,0 +1,8 @@
+@startuml
+!define UI_COLOUR #ff9999
+!define PARSER_COLOUR #ff9933
+!define STORAGE_COLOUR #ffff00
+!define COMMAND_COLOUR #66ff99
+!define STORAGE_COLOUR #6699ff
+!define EVENT_COLOUR #993366
+@enduml

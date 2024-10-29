@@ -3,6 +3,7 @@ package seedu.manager.parser;
 import seedu.manager.command.AddCommand;
 import seedu.manager.command.Command;
 import seedu.manager.command.ExitCommand;
+import seedu.manager.command.FilterCommand;
 import seedu.manager.command.ListCommand;
 import seedu.manager.command.MarkCommand;
 import seedu.manager.command.MenuCommand;
@@ -44,6 +45,8 @@ public class ParserManager {
             return new MarkCommandParser().parse(command, commandParts);
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(command, commandParts);
+        case FilterCommand.COMMAND_WORD:
+            return new FilterCommandParser().parse(command, commandParts);
         default:
             throw new InvalidCommandException(INVALID_COMMAND_MESSAGE);
         }

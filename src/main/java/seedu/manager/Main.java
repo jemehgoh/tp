@@ -2,6 +2,7 @@ package seedu.manager;
 
 import seedu.manager.command.Command;
 import seedu.manager.event.EventList;
+import seedu.manager.exception.DuplicateDataException;
 import seedu.manager.exception.InvalidCommandException;
 import seedu.manager.parser.ParserManager;
 import seedu.manager.ui.Ui;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class Main {
     private static final Ui ui = new Ui();
     private static EventList events = new EventList();
-    private static final String FILE_PATH = "events.txt";
+    private static final String FILE_PATH = "events.csv";
     private static final Storage storage = new Storage(FILE_PATH);
 
     /**
@@ -22,7 +23,6 @@ public class Main {
         ui.greetUser();
         loadData();
         runCommandLoop();
-        saveData();
         System.exit(0);
     }
 
@@ -42,9 +42,9 @@ public class Main {
                 command.setData(events);
                 command.execute();
                 ui.showOutputToUser(command);
-
+                saveData();
                 isGettingCommands = !command.getCanExit();
-            } catch (InvalidCommandException exception) {
+            } catch (InvalidCommandException | DuplicateDataException exception) {
                 ui.showErrorMessageToUser(exception);
             }
         }
@@ -63,6 +63,7 @@ public class Main {
         }
     }
 
+    //@@author KuanHsienn
     /**
      * Saves events to file and handles exceptions.
      */

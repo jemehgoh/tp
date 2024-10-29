@@ -1,0 +1,25 @@
+@startuml
+
+participant ":Main" as main
+participant ":MarkEventCommand" as markCommand
+participant ":EventList" as eventList
+participant ":Event" as event
+
+main -> markCommand : execute()
+activate markCommand
+
+markCommand -> eventList : getEventByName(eventName : String)
+activate eventList
+
+eventList --> markCommand : eventToMark : Event
+deactivate eventList
+
+markCommand -> event : setDone(toMark : boolean)
+activate event
+
+event --> markCommand
+deactivate event
+
+markCommand --> main
+deactivate markCommand
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+!include style.puml
+allowmixing
+
+package storage {
+    class Storage {
+        - String filePath
+        + Storage(String filePath)
+        + void saveEvents(EventList events) throws IOException
+        + void loadEvents(EventList events) throws IOException
+        - boolean isValidFilePath(String filePath)
+        - boolean isTestEnvironment()
+    }
+}
+
+rectangle Main
+rectangle EventList EVENT_COLOUR
+rectangle Parser PARSER_COLOUR
+
+Storage ..> EventList : saves/loads
+Parser <.. Storage : adopts
+EventList *--> "*" Event : contains
+Main .> Storage : invokes
+
+@enduml

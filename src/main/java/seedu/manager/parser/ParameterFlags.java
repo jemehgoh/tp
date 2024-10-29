@@ -11,4 +11,7 @@ public class ParameterFlags {
     public static final String PARTICIPANT_FLAG = "-p";
     public static final String STATUS_FLAG = "-s";
     public static final String KEYWORD_FLAG = "-by";
+    public static final String PRIORITY_FLAG = "-u";
+    public static final String NUMBER_FLAG = "-n";
+    public static final String EMAIL_FLAG = "-email";
 }

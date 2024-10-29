@@ -2,6 +2,7 @@ package seedu.manager.command;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seedu.manager.enumeration.Priority;
 import seedu.manager.event.EventList;
 
 import java.time.LocalDateTime;
@@ -17,11 +18,11 @@ public class SortCommandTest {
     @BeforeEach
     public void setUp(){
         eventList.addEvent("C-Event", LocalDateTime.parse("2024-10-23 21:00", formatter),
-                "Venue C");
+                "Venue C", Priority.HIGH);
         eventList.addEvent("B-Event", LocalDateTime.parse("2024-10-23 21:05", formatter),
-                "Venue B");
+                "Venue B", Priority.MEDIUM);
         eventList.addEvent("A-Event", LocalDateTime.parse("2023-10-23 21:00", formatter),
-                "Venue A");
+                "Venue A", Priority.LOW);
         assertEquals(3, eventList.getListSize());
     }
 
@@ -33,12 +34,13 @@ public class SortCommandTest {
         sortCommand.setData(eventList);
         sortCommand.execute();
 
-        String expectedMessage = """
-                Events successfully sorted by name!
-                1. Event name: A-Event / Event time: 2023-10-23 21:00 / Event venue: Venue A / Done: N
-                2. Event name: B-Event / Event time: 2024-10-23 21:05 / Event venue: Venue B / Done: N
-                3. Event name: C-Event / Event time: 2024-10-23 21:00 / Event venue: Venue C / Done: N
-                """;
+        String expectedMessage = "Events successfully sorted by name!\n" +
+                "1. Event name: A-Event / Event time: 2023-10-23 21:00 / Event venue: Venue A /" +
+                " Event Priority: LOW / Done: N\n" +
+                "2. Event name: B-Event / Event time: 2024-10-23 21:05 / Event venue: Venue B /" +
+                " Event Priority: MEDIUM / Done: N\n" +
+                "3. Event name: C-Event / Event time: 2024-10-23 21:00 / Event venue: Venue C /" +
+                " Event Priority: HIGH / Done: N\n";
 
         assertEquals(expectedMessage, sortCommand.getMessage());
         assertFalse(sortCommand.getCanExit());
@@ -50,12 +52,30 @@ public class SortCommandTest {
         sortCommand.setData(eventList);
         sortCommand.execute();
 
-        String expectedMessage = """
-                Events successfully sorted by time!
-                1. Event name: A-Event / Event time: 2023-10-23 21:00 / Event venue: Venue A / Done: N
-                2. Event name: C-Event / Event time: 2024-10-23 21:00 / Event venue: Venue C / Done: N
-                3. Event name: B-Event / Event time: 2024-10-23 21:05 / Event venue: Venue B / Done: N
-                """;
+        String expectedMessage = "Events successfully sorted by time!\n" +
+                "1. Event name: A-Event / Event time: 2023-10-23 21:00 / Event venue: Venue A /" +
+                " Event Priority: LOW / Done: N\n" +
+                "2. Event name: C-Event / Event time: 2024-10-23 21:00 / Event venue: Venue C /" +
+                " Event Priority: HIGH / Done: N\n" +
+                "3. Event name: B-Event / Event time: 2024-10-23 21:05 / Event venue: Venue B /" +
+                " Event Priority: MEDIUM / Done: N\n";
+        assertEquals(expectedMessage, sortCommand.getMessage());
+        assertFalse(sortCommand.getCanExit());
+    }
+
+    @Test public void execute_sortByPriority_success() {
+        SortCommand sortCommand = new SortCommand("priority");
+
+        sortCommand.setData(eventList);
+        sortCommand.execute();
+
+        String expectedMessage = "Events successfully sorted by priority level!\n" +
+                "1. Event name: C-Event / Event time: 2024-10-23 21:00 / Event venue: Venue C /" +
+                " Event Priority: HIGH / Done: N\n" +
+                "2. Event name: B-Event / Event time: 2024-10-23 21:05 / Event venue: Venue B /" +
+                " Event Priority: MEDIUM / Done: N\n" +
+                "3. Event name: A-Event / Event time: 2023-10-23 21:00 / Event venue: Venue A /" +
+                " Event Priority: LOW / Done: N\n";
         assertEquals(expectedMessage, sortCommand.getMessage());
         assertFalse(sortCommand.getCanExit());
     }

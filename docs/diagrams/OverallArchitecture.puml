@@ -1,45 +1,27 @@
 @startuml
-'https://plantuml.com/class-diagram
+!include style.puml
 
-class Main {
+rectangle {
+    rectangle Main
+    rectangle Ui UI_COLOUR
+    rectangle Parser PARSER_COLOUR
+    rectangle Storage STORAGE_COLOUR
+    rectangle Command COMMAND_COLOUR
+    rectangle Event EVENT_COLOUR
 }
 
 Main --> Ui
 Main --> Storage
-Main --> EventList
+Main --> Event
 Main ..> Parser
 Main ..> Command
 
-class Ui {
-}
-
 Ui ..> Command
-
-class Parser {
-}
 
 Parser ..> Command
 
-class Storage {
-}
+Storage ..> Event
 
-Storage ..> EventList
-
-abstract class Command {
-}
-
-Command <|-- AddCommand
-Command <|-- ExitCommand
-Command <|-- ListCommand
-Command <|-- XYZCommand
-
-Command ..> EventList
-
-class EventList {
-}
-
-EventList *--> "*" Event
-
-Event *--> "*" Participant
+Command ..> Event
 
 @enduml

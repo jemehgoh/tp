@@ -45,10 +45,10 @@ public class RemoveCommandParser extends Parser {
                 return getRemoveParticipantCommand(input);
             }
 
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_REMOVE_MESSAGE);
         } catch (IndexOutOfBoundsException exception) {
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_REMOVE_MESSAGE);
         }
     }

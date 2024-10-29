@@ -1,29 +1,45 @@
 @startuml
-'https://plantuml.com/sequence-diagram
+!include style.puml
 
-Participant ":Main" as main
-Participant ":Ui" as ui
-Participant ":Parser" as parser
-Participant ":AddCommand" as command
-Participant ":EventList" as eventList
+Participant "Main" as main
+Participant "Ui" as ui UI_COLOUR
+Participant "Storage" as storage STORAGE_COLOUR
+Participant "Parser" as parser PARSER_COLOUR
+Participant "Command" as command COMMAND_COLOUR
+Participant "EventList" as event EVENT_COLOUR
 
-main -> ui : getCommand()
-activate ui
-ui --> main : "add -e event -t 1200 -v venue"
-deactivate ui
 
-create parser
+main -> storage : loadEvents(events)
+activate storage STORAGE_COLOUR
+storage --> parser : parseFile(events, FILE_PATH)
+activate parser PARSER_COLOUR
+parser -> event : addEvent(eventName, time, venue)
+activate event EVENT_COLOUR
+event --> parser
+deactivate event
+parser --> storage
+deactivate parser
+storage -> main
+deactivate storage
+
 main -> parser : Parser()
-activate parser
+activate parser PARSER_COLOUR
 parser --> main : :Parser
 deactivate parser
 
+main -> ui : getCommand()
+activate ui UI_COLOUR
+ui --> main : "add -e event -t 1200 -v venue"
+deactivate ui
+
+
+
 main -> parser : parseCommand("add -e event -t 1200 -v venue")
-activate parser
+activate parser PARSER_COLOUR
 
 create command
 parser -> command : AddCommand("event", "1200", "venue")
-activate command
+activate command COMMAND_COLOUR
 command --> parser : :AddCommand
 deactivate command
 
@@ -32,31 +48,40 @@ deactivate parser
 destroy parser
 
 main -> command : setData(events:EventList)
-activate command
+activate command COMMAND_COLOUR
 command --> main
 deactivate command
 
 main -> command : execute()
-activate command
+activate command COMMAND_COLOUR
 
-command -> eventList : addEvent("event", "1200", "venue")
-activate eventList
-eventList --> command
-deactivate eventList
+command -> event : addEvent("event", "1200", "venue")
+activate event EVENT_COLOUR
+event --> command
+deactivate event
 
 command --> main
 deactivate command
 
 main -> ui : showOutputToUser(command: Command)
-activate ui
+activate ui UI_COLOUR
 
 ui -> command : getMessage()
-activate command
+activate command COMMAND_COLOUR
 
 command --> ui : :String
 deactivate command
 
-ui --> main
+ui --> main :
 deactivate ui
+
+main -> storage : saveEvents(events)
+activate storage STORAGE_COLOUR
+storage -> event : getList()
+activate event EVENT_COLOUR
+event --> storage
+deactivate event
+storage --> main
+deactivate storage
 
 @enduml

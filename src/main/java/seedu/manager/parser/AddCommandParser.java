@@ -2,6 +2,7 @@ package seedu.manager.parser;
 
 import seedu.manager.command.AddCommand;
 import seedu.manager.command.Command;
+import seedu.manager.enumeration.Priority;
 import seedu.manager.exception.InvalidCommandException;
 
 import java.time.LocalDateTime;
@@ -15,10 +16,10 @@ import static java.util.logging.Level.WARNING;
  * Represents the parser for the add command.
  */
 public class AddCommandParser extends Parser {
-    private static final String FLAGS_ADD_EVENT = String.format("(%s|%s|%s)", ParameterFlags.EVENT_FLAG,
-            ParameterFlags.TIME_FLAG, ParameterFlags.VENUE_FLAG);
-    private static final String FLAGS_ADD_PARTICIPANT = String.format("(%s|%s)", ParameterFlags.PARTICIPANT_FLAG,
-            ParameterFlags.EVENT_FLAG);
+    private static final String FLAGS_ADD_EVENT = String.format("(%s|%s|%s|%s)", ParameterFlags.EVENT_FLAG,
+            ParameterFlags.TIME_FLAG, ParameterFlags.VENUE_FLAG, ParameterFlags.PRIORITY_FLAG);
+    private static final String FLAGS_ADD_PARTICIPANT = String.format("(%s|%s|%s|%s)", ParameterFlags.PARTICIPANT_FLAG,
+            ParameterFlags.NUMBER_FLAG, ParameterFlags.EMAIL_FLAG, ParameterFlags.EVENT_FLAG);
     private static final String INVALID_ADD_MESSAGE = """
             Invalid command!
             Please enter your commands in the following format:
@@ -28,6 +29,11 @@ public class AddCommandParser extends Parser {
             Invalid date-time format!
             Please use the following format for event time:
             YYYY-MM-DD HH:mm
+            """;
+    private static final String INVALID_PRIORITY_MESSAGE = """
+            Invalid priority level status!
+            Please use the following format for priority level:
+            high/medium/low
             """;
 
     /**
@@ -56,14 +62,16 @@ public class AddCommandParser extends Parser {
                 return getAddParticipantCommand(input);
             }
 
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_ADD_MESSAGE);
         } catch (IndexOutOfBoundsException exception) {
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_ADD_MESSAGE);
         } catch (DateTimeParseException exception) {
-            LOGGER.log(WARNING,"Invalid date-time format");
+            logger.log(WARNING,"Invalid date-time format");
             throw new InvalidCommandException(INVALID_DATE_TIME_MESSAGE);
+        } catch (IllegalArgumentException exception) {
+            throw new InvalidCommandException(INVALID_PRIORITY_MESSAGE);
         }
     }
 
@@ -81,10 +89,11 @@ public class AddCommandParser extends Parser {
         LocalDateTime eventTime = LocalDateTime.parse(inputParts[2].trim(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         String eventVenue = inputParts[3].trim();
+        Priority eventPriority = Priority.valueOf(inputParts[4].trim().toUpperCase());
 
-        LOGGER.info("Creating AddCommand for event with details: " +
+        logger.info("Creating AddCommand for event with details: " +
                 eventName + ", " + inputParts[2].trim() + ", " + eventVenue);
-        return new AddCommand(eventName, eventTime, eventVenue);
+        return new AddCommand(eventName, eventTime, eventVenue, eventPriority);
     }
 
     /**
@@ -96,8 +105,8 @@ public class AddCommandParser extends Parser {
      */
     private AddCommand getAddParticipantCommand(String input) throws IndexOutOfBoundsException {
         String[] inputParts = input.split(FLAGS_ADD_PARTICIPANT);
-        LOGGER.info("Creating AddCommand for participant with details: " +
+        logger.info("Creating AddCommand for participant with details: " +
                 inputParts[1].trim() + ", " + inputParts[2].trim());
-        return new AddCommand(inputParts[1].trim(), inputParts[2].trim());
+        return new AddCommand(inputParts[1].trim(), inputParts[2].trim(), inputParts[3].trim(), inputParts[4].trim());
     }
 }

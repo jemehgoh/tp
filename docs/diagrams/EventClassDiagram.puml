@@ -1,0 +1,22 @@
+@startuml
+!include style.puml
+
+rectangle event {
+    rectangle EventList EVENT_COLOUR
+    rectangle Event EVENT_COLOUR
+    rectangle Participant EVENT_COLOUR
+}
+
+rectangle Main
+rectangle Command COMMAND_COLOUR
+rectangle Storage STORAGE_COLOUR
+
+EventList *--> "*" Event : event
+Event *--> "*" Participant : participant
+
+Main .> EventList
+EventList <. Storage
+EventList <.. Command
+Command .> Event
+
+@enduml

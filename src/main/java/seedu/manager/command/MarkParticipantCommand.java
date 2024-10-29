@@ -33,19 +33,19 @@ public class MarkParticipantCommand extends MarkCommand {
      */
     @Override
     public void execute() {
-        Optional<Event> event = eventList.getEventByName(this.eventName);
+        Optional<Event> event = eventList.getEventByName(eventName);
 
         if (event.isEmpty()) {
-            this.message = INVALID_EVENT_MESSAGE;
+            message = INVALID_EVENT_MESSAGE;
             return;
         }
 
-        boolean isMarked = event.get().markParticipant(this.participantName, this.toMark);
+        boolean isMarked = event.get().markParticipantByName(participantName, toMark);
 
         if (isMarked) {
-            this.message = (this.toMark) ? PARTICIPANT_MARK_MESSAGE : PARTICIPANT_UNMARK_MESSAGE;
+            message = (toMark) ? PARTICIPANT_MARK_MESSAGE : PARTICIPANT_UNMARK_MESSAGE;
         } else {
-            this.message = INVALID_PARTICIPANT_MESSAGE;
+            message = INVALID_PARTICIPANT_MESSAGE;
         }
     }
 }

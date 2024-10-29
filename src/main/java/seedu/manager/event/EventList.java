@@ -1,5 +1,8 @@
 package seedu.manager.event;
 
+import seedu.manager.enumeration.Priority;
+import seedu.manager.exception.DuplicateDataException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,6 +14,8 @@ import java.util.Optional;
  * It provides methods to manage an event list.
  */
 public class EventList  {
+    private static final String DUPLICATE_EVENT_MESSAGE = "Duplicate event!";
+
     private final ArrayList<Event> eventList;
 
     /**
@@ -54,10 +59,25 @@ public class EventList  {
      * @param eventName the name of the event to be added.
      * @param time      the time of the event.
      * @param venue     the venue where the event will take place.
+     * @param priority the priority level of the event
+     * @throws DuplicateDataException if an event with eventName is present in the event list.
      */
-    public void addEvent(String eventName, LocalDateTime time, String venue) {
-        Event newEvent = new Event(eventName, time, venue);
+    public void addEvent(String eventName, LocalDateTime time,
+                         String venue, Priority priority) throws DuplicateDataException{
+        if (getEventByName(eventName).isPresent()) {
+            throw new DuplicateDataException(DUPLICATE_EVENT_MESSAGE);
+        }
+        Event newEvent = new Event(eventName, time, venue, priority);
         eventList.add(newEvent);
+    }
+
+    /**
+     * Adds an event to the event list.
+     *
+     * @param event the event to be added to the list
+     */
+    public void addEvent(Event event) {
+        eventList.add(event);
     }
 
     /**
@@ -108,14 +128,16 @@ public class EventList  {
      * Returns true if a participant can be added to a specified event,
      * returns false otherwise.
      *
-     * @param participantName the name of the participant to be added.
+     * @param name the name of the participant to be added.
+     * @param number the contact number of the participant
+     * @param email the email address of the participant
      * @param eventName the name of the event to which the participant will be added.
      * @return {@code true} if the participant can be added to the event, {@code false} otherwise.
      */
-    public boolean addParticipantToEvent(String participantName, String eventName) {
+    public boolean addParticipantToEvent(String name, String number, String email, String eventName) {
         for (Event event : eventList) {
             if (event.getEventName().equals(eventName)) {
-                event.addParticipant(participantName);
+                event.addParticipant(name, number, email);
                 return true;
             }
         }
@@ -159,5 +181,30 @@ public class EventList  {
      */
     public void sortByTime() {
         eventList.sort(Comparator.comparing(Event::getEventTime));
+    }
+
+    /**
+     *  Sort the event list by priority level from highest to lowest priority.
+     */
+    public void sortByPriority() {
+        eventList.sort(Comparator.comparing(Event::getEventPriority));
+    }
+  
+    /**
+     * Filters events in the event list by the specified priority level.
+     *
+     * @param priority the priority level to filter events by
+     * @return an {@code EventList} containing only events with the specified priority
+     */
+    public EventList filterByPriority(Priority priority) {
+        EventList filteredList = new EventList();
+
+        for (Event event : eventList) {
+            if (event.getEventPriority() == priority) {
+                filteredList.addEvent(event);
+            }
+        }
+
+        return filteredList;
     }
 }

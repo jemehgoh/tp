@@ -1,0 +1,21 @@
+@startuml
+!include style.puml
+allowmixing
+
+package ui {
+    class "Ui" as Ui UI_COLOUR {
+        +greetUser() : void
+        +getCommand() : String
+        +showOutputToUser(command:Command) : void
+        +showErrorMessageToUser(exception:Exception) : void
+    }
+}
+
+rectangle Main
+
+rectangle Command COMMAND_COLOUR
+
+Main ..> Ui
+Ui .> Command
+
+@enduml

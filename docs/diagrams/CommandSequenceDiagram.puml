@@ -1,0 +1,42 @@
+@startuml
+!include style.puml
+
+participant "Main" as main
+participant "Parser"  as parser PARSER_COLOUR
+participant "Ui"  as ui UI_COLOUR
+participant "XYZCommand" as xyzCommand COMMAND_COLOUR
+
+
+main -> parser : parseCommand(userCommandText)
+activate parser PARSER_COLOUR
+
+create xyzCommand
+parser -> xyzCommand : XYZCommand(...)
+activate xyzCommand COMMAND_COLOUR
+xyzCommand --> parser : XYZCommand
+deactivate xyzCommand
+
+parser --> main : command : Command
+deactivate parser
+
+main -> xyzCommand : setdata(events)
+activate xyzCommand COMMAND_COLOUR
+xyzCommand --> main
+deactivate xyzCommand
+
+main -> xyzCommand : execute()
+activate xyzCommand COMMAND_COLOUR
+xyzCommand --> main
+deactivate xyzCommand
+
+main -> ui : showOutputToUser(command)
+activate ui UI_COLOUR
+
+ui -> xyzCommand : getMessage()
+activate xyzCommand COMMAND_COLOUR
+xyzCommand --> ui
+deactivate xyzCommand
+
+ui --> main
+deactivate ui
+@enduml

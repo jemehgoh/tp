@@ -16,12 +16,11 @@ public class ViewCommandTest {
     @BeforeEach
     public void setUp() {
         Command command;
-
-        command = new ParserManager().parseCommand("add -e Event 1 -t 2024-10-10 10:00 -v Venue A");
+        command = new ParserManager().parseCommand("add -e Event 1 -t 2024-10-10 10:00 -v Venue A -u high");
         command.setData(eventList);
         command.execute();
 
-        command = new ParserManager().parseCommand("add -p Tom -e Event 1");
+        command = new ParserManager().parseCommand("add -p Tom -n 95015025 -email example@gmail.com -e Event 1");
         command.setData(eventList);
         command.execute();
 

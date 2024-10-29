@@ -37,10 +37,10 @@ public class ViewCommandParser extends Parser {
                 return getViewCommand(input);
             }
 
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_VIEW_MESSAGE);
         } catch (IndexOutOfBoundsException exception) {
-            LOGGER.log(WARNING,"Invalid command format");
+            logger.log(WARNING,"Invalid command format");
             throw new InvalidCommandException(INVALID_VIEW_MESSAGE);
         }
     }

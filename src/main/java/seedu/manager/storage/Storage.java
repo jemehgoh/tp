@@ -2,12 +2,10 @@ package seedu.manager.storage;
 
 import seedu.manager.event.EventList;
 import seedu.manager.event.Event;
+import seedu.manager.parser.FileParser;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 //@@author KuanHsienn
@@ -25,6 +23,9 @@ public class Storage {
      * @param filePath The path to the storage file.
      */
     public Storage(String filePath) {
+        if (!isTestEnvironment()) {
+            assert isValidFilePath(filePath) : "Invalid file path: " + filePath;
+        }
         this.filePath = filePath;
     }
 
@@ -40,7 +41,8 @@ public class Storage {
             for (Event event : events.getList()) {
                 String eventTimeString = formatter.format(event.getEventTime());
                 writer.write(event.getEventName() + "," + eventTimeString + ","
-                        + event.getEventVenue() + "\n"); // Save event details in CSV format
+                        + event.getEventVenue() + ","
+                        + event.getEventPriority() + "\n"); // Save event details in CSV format
             }
         } catch (IOException exception) {
             throw new IOException("Error saving events to file: " + filePath);
@@ -53,19 +55,28 @@ public class Storage {
      * @throws IOException if there's an error reading from the file.
      */
     public void loadEvents(EventList events) throws IOException {
-        try {
-            for (String line : Files.readAllLines(Paths.get(filePath))) {
-                String[] parts = line.split(","); // CSV format
-                if (parts.length == 3) {
-                    String eventName = parts[0].trim();
-                    LocalDateTime time = LocalDateTime.parse(parts[1].trim(), formatter);
-                    String venue = parts[2].trim();
-                    events.addEvent(eventName, time, venue);
-                }
-            }
-        } catch (IOException exception) {
-            throw new IOException("Error loading events from file: " + filePath + ".");
-        }
+        FileParser parser = new FileParser();
+        parser.parseFile(events, filePath);
+    }
+
+    /**
+     * Checks if the given file path is valid and matches the expected path.
+     *
+     * @param filePath The path to check.
+     * @return True if valid and matches, false otherwise.
+     */
+    private boolean isValidFilePath(String filePath) {
+        String expectedPath = "events.txt"; // You can change this if needed
+        return filePath.equals(expectedPath);
+    }
+
+    /**
+     * Checks if the code is running in a test environment.
+     *
+     * @return True if in test environment, false otherwise.
+     */
+    private boolean isTestEnvironment() {
+        return "true".equals(System.getProperty("test.environment"));
     }
 }
 

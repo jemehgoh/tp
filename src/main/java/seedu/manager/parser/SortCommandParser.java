@@ -56,7 +56,7 @@ public class SortCommandParser extends Parser {
             throw new InvalidCommandException(INVALID_SORT_KEYWORD_MESSAGE);
 
         } catch (IndexOutOfBoundsException exception) {
-            LOGGER.log(WARNING, "Invalid command format");
+            logger.log(WARNING, "Invalid command format");
             throw new InvalidCommandException(INVALID_SORT_MESSAGE);
         }
     }

@@ -2,6 +2,7 @@ package seedu.manager.command;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seedu.manager.enumeration.Priority;
 import seedu.manager.event.EventList;
 
 import java.time.LocalDateTime;
@@ -17,16 +18,23 @@ class MarkParticipantCommandTest {
     public void testSetUp() {
         eventList = new EventList();
         eventList.addEvent("Event 1", LocalDateTime.parse("2024-10-10 16:00", formatter),
-                "Venue 1");
-        eventList.addParticipantToEvent("John Doe", "Event 1");
+                           "Venue 1", Priority.HIGH);
+        eventList.addParticipantToEvent(
+                "John Doe",
+                "89521252",
+                "example@gmail.com",
+                "Event 1"
+        );
     }
 
     @Test
     public void execute_validParticipantMarkTrue_success() {
         String expectedMessage = "Participant marked present.";
 
-        MarkParticipantCommand command = new MarkParticipantCommand("John Doe",
-                "Event 1", true);
+        MarkParticipantCommand command = new MarkParticipantCommand(
+                "John Doe",
+                "Event 1",
+                true);
         command.setData(eventList);
         command.execute();
         assertEquals(expectedMessage, command.getMessage());
