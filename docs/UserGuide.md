@@ -44,12 +44,8 @@ copy FROM_EVENT > TO_EVENT: Copies participant list from one event to another.
 find -e EVENT -p NAME: Finds all participants with specified name in an event.
 filter -e/-t/-u FILTER_DESCRIPTION: Filters events by name/time/priority.
 sort -by KEYWORD: Sorts events by name/time/priority.
-<<<<<<< HEAD
 save: Save latest changes to file.
-exit: Exit program.
-=======
 exit: Exit program
->>>>>>> master
 ```
 
 Format: `menu`
