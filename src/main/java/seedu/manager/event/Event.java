@@ -304,18 +304,25 @@ public class Event {
     /**
      * Updates the details of an event.
      *
-     * @param itemName The name of original item.
-     * @param itemNewName The name of the new item.
+     * @param itemName The original name of the item.
+     * @param newItemName The new name of the item.
+     *
+     * @throws DuplicateDataException if an item with name newItemName is present in the item list.
      */
-    public boolean updateItem(String itemName, String itemNewName) {
-        for (Item item : this.itemList) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                item.setName(itemNewName);
-                item.setPresent(false);
-                return true;
-            }
+    public boolean updateItem(String itemName, String newItemName) {
+        if (getItemByName(newItemName).isPresent()) {
+            throw new DuplicateDataException(DUPLICATE_ITEM_MESSAGE);
         }
-        return false;
+
+        Optional<Item> itemToUpdate = getItemByName(itemName);
+
+        if (itemToUpdate.isEmpty()) {
+            return false;
+        }
+
+        itemToUpdate.get().setName(newItemName);
+        itemToUpdate.get().setPresent(false);
+        return true;
     }
 
     //@@author jemehgoh

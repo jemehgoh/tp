@@ -1,5 +1,7 @@
 package seedu.manager.command;
 
+import seedu.manager.exception.DuplicateDataException;
+
 /**
  * Represents a command to edit an item for an event.
  * The edit command will store the event's name, the item to be edited.
@@ -28,7 +30,7 @@ public class EditItemCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws DuplicateDataException {
         boolean isEdited = this.eventList.editItem(itemName, itemNewName, eventName);
         this.message = (isEdited) ? EDIT_ITEM_MESSAGE : EDIT_FAILURE_MESSAGE;
     }

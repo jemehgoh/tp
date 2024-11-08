@@ -321,17 +321,19 @@ public class EventList  {
      * </p>
      *
      * @param itemName The name of original item.
-     * @param itemNewName The name of the new item.
+     * @param newItemName The name of the new item.
      * @return {@code true} if the item was successfully edited;
      *         {@code false} if the item does not exist.
+     * @throws DuplicateDataException if an item with name newItemName is present in the event's item list.
      */
-    public boolean editItem(String itemName, String itemNewName, String eventName) {
-        for (Event event : eventList) {
-            if (event.getEventName().equals(eventName)) {
-                return event.updateItem(itemName, itemNewName);
-            }
+    public boolean editItem(String itemName, String newItemName, String eventName) throws DuplicateDataException {
+        Optional<Event> eventToUpdate = getEventByName(eventName);
+
+        if (eventToUpdate.isEmpty()) {
+            return false;
         }
-        return false;
+
+        return eventToUpdate.get().updateItem(itemName, newItemName);
     }
 
     //@@author LTK-1606
