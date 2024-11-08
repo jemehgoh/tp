@@ -1,6 +1,7 @@
 package seedu.manager.command;
 
 import seedu.manager.enumeration.Priority;
+import seedu.manager.exception.DuplicateDataException;
 
 import java.time.LocalDateTime;
 
@@ -44,9 +45,11 @@ public class EditEventCommand extends Command{
      * Executes the edit operation, updating the event's information if the event exits.
      * If successful, a confirmation message
      * is set; otherwise, an error message is set.
+     *
+     * @throws DuplicateDataException if an event with the new event name is already present in the list.
      */
     @Override
-    public void execute() {
+    public void execute() throws DuplicateDataException {
         boolean isEdited = this.eventList.editEvent(eventName, eventNewName, eventTime, eventVenue, eventPriority);
         this.message = (isEdited) ? EDIT_EVENT_MESSAGE : EDIT_FAILURE_MESSAGE;
     }

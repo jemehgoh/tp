@@ -258,22 +258,28 @@ public class EventList  {
      * </p>
      *
      * @param eventName The name of the event to be edited.
-     * @param eventNewName The new name of the event.
+     * @param newEventName The new name of the event.
      * @param eventTime The new time of the event.
      * @param eventVenue The new venue of the event.
      * @param eventPriority The new priority of the event.
      * @return {@code true} if the event was successfully edited;
      *         {@code false} if the event does not exist.
+     * @throws DuplicateDataException if an event with name newEventName is already present in the event list.
      */
-    public boolean editEvent(String eventName, String eventNewName, LocalDateTime eventTime, String eventVenue,
-            Priority eventPriority) {
-        for (Event event : eventList) {
-            if (event.getEventName().equals(eventName)) {
-                event.updateEvent(eventNewName, eventTime, eventVenue, eventPriority);
-                return true;
-            }
+    public boolean editEvent(String eventName, String newEventName, LocalDateTime eventTime, String eventVenue,
+            Priority eventPriority) throws DuplicateDataException {
+
+        if (getEventByName(newEventName).isPresent()) {
+            throw new DuplicateDataException(DUPLICATE_EVENT_MESSAGE);
         }
-        return false;
+
+        Optional<Event> eventToUpdate = getEventByName(eventName);
+        if (eventToUpdate.isEmpty()) {
+            return false;
+        }
+
+        eventToUpdate.get().updateEvent(newEventName, eventTime, eventVenue, eventPriority);
+        return true;
     }
 
     //@@author KuanHsienn
