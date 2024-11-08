@@ -1,15 +1,18 @@
 package seedu.manager.command;
 
+import seedu.manager.exception.DuplicateDataException;
+
 /**
  * Represents a command to edit an event to the event list.
  * The edit command will store the event's name, the participant's information.
  */
-public class EditParticipantCommand extends Command{
+public class EditParticipantCommand extends Command {
     public static final String COMMAND_WORD = "edit";
     private static final String EDIT_PARTICIPANT_MESSAGE = "Participant contact information successfully updated";
     private static final String EDIT_FAILURE_MESSAGE = "Event/Participant not found!";
     protected String eventName;
     protected String participantName;
+    protected String newParticipantName;
     protected String participantNumber;
     protected String participantEmail;
 
@@ -24,10 +27,11 @@ public class EditParticipantCommand extends Command{
      * @param participantEmail The new email address of the participant.
      * @param eventName The name of the event associated with the participant.
      */
-    public EditParticipantCommand(String participantName, String participantNumber, String participantEmail,
-                                  String eventName) {
+    public EditParticipantCommand(String participantName, String newParticipantName, String participantNumber,
+            String participantEmail, String eventName) {
         super(false);
         this.participantName = participantName;
+        this.newParticipantName = newParticipantName;
         this.participantNumber = participantNumber;
         this.participantEmail = participantEmail;
         this.eventName = eventName;
@@ -40,15 +44,11 @@ public class EditParticipantCommand extends Command{
      * is set; otherwise, an error message is set.
      */
     @Override
-    public void execute() {
+    public void execute() throws DuplicateDataException {
         if (participantName != null) {
-            boolean isEdited = this.eventList.editParticipant(
-                    this.participantName,
-                    this.participantNumber,
-                    this.participantEmail,
-                    this.eventName
-            );
-            this.message = (isEdited) ? EDIT_PARTICIPANT_MESSAGE : EDIT_FAILURE_MESSAGE;
+            boolean isEdited = eventList.editParticipant(participantName, newParticipantName,
+                    participantNumber, participantEmail, eventName);
+            message = (isEdited) ? EDIT_PARTICIPANT_MESSAGE : EDIT_FAILURE_MESSAGE;
         }
     }
 }

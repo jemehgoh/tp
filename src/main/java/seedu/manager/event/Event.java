@@ -284,20 +284,26 @@ public class Event {
      * Updates the details of a participant in this event.
      *
      * @param participantName the name of the participant to be updated.
+     * @param newName        the new name of the participant.
      * @param newNumber      the new contact number of the participant.
      * @param newEmail       the new email address of the participant.
      * @return {@code true} if the participant was successfully updated;
      *         {@code false} if the participant was not found.
+     * @throws DuplicateDataException if a participant with name newName exists in the participant list.
      */
-    public boolean updateParticipant(String participantName, String newNumber, String newEmail) {
-        for (Participant participant : this.participantList) {
-            if (participant.getName().equalsIgnoreCase(participantName)) {
-                participant.setNumber(newNumber);
-                participant.setEmail(newEmail);
-                return true;
-            }
+    public boolean updateParticipant(String participantName, String newName, String newNumber, String newEmail) {
+        if (!participantName.equalsIgnoreCase(newName) && getParticipantByName(newName).isPresent()) {
+            throw new DuplicateDataException(DUPLICATE_ITEM_MESSAGE);
         }
-        return false;
+
+        Optional<Participant> participantToUpdate = getParticipantByName(participantName);
+
+        if (participantToUpdate.isEmpty()) {
+            return false;
+        }
+
+        participantToUpdate.get().setDetails(newName, newNumber, newEmail);
+        return true;
     }
 
     //@@author MatchaRRR
@@ -310,7 +316,7 @@ public class Event {
      * @throws DuplicateDataException if an item with name newItemName is present in the item list.
      */
     public boolean updateItem(String itemName, String newItemName) {
-        if (getItemByName(newItemName).isPresent()) {
+        if (!itemName.equalsIgnoreCase(newItemName) && getItemByName(newItemName).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_ITEM_MESSAGE);
         }
 

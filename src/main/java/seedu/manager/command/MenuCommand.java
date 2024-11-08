@@ -17,8 +17,8 @@ public class MenuCommand extends Command {
             remove -e EVENT: Remove an event from the event list.
             remove -p PARTICIPANT -e EVENT: Remove a participant from an event.
             remove -m ITEM -e EVENT: Remove an item from an event.
-            edit -e EVENT -name EVENT_NAME -t TIME -v VENUE -u PRIORITY: Edit event info.
-            edit -p PARTICIPANT -n NUMBER -email EMAIL -e EVENT: Edit participant contact info.
+            edit -e OLD_EVENT -name NEW_EVENT -t TIME -v VENUE -u PRIORITY: Edit event info.
+            edit -p OLD_PARTICIPANT -name NEW_PARTICIPANT -n NUMBER -email EMAIL -e EVENT: Edit participant info.
             edit -m ITEM > NEW_ITEM -e EVENT: Edit an item in an event.
             view -e EVENT -y TYPE: View the list of participants or items of an event.
             mark -e EVENT -s STATUS: Mark an event as done or not done.

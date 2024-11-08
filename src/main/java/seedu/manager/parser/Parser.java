@@ -53,9 +53,9 @@ public class Parser {
     private static final String INVALID_EDIT_MESSAGE = """
             Invalid command!
             Please enter your commands in the following format:
-            edit -e EVENT -name EVENT_NAME -t TIME -v VENUE -u PRIORITY: Edit event info.
+            edit -e OLD_EVENT -name NEW_EVENT -t TIME -v VENUE -u PRIORITY: Edit event info.
             edit -m ITEM > NEW_ITEM -e EVENT: Edit an item from an event.
-            edit -p PARTICIPANT -n NUMBER -email EMAIL -e EVENT: Edit participant contact info.
+            edit -p OLD_PARTICIPANT -name NEW_PARTICIPANT -n NUMBER -email EMAIL -e EVENT: Edit participant info.
             """;
     private static final String INVALID_VIEW_MESSAGE = """
             Invalid command!
@@ -147,7 +147,7 @@ public class Parser {
 
     private static final String EVENT_REGEX = "(-e|-t|-v|-u)";
     private static final String EVENT_ATTRIBUTE_REGEX = "(-e|-name|-t|-v|-u)";
-    private static final String PARTICIPANT_REGEX = "(-p|-n|-email|-e)";
+    private static final String PARTICIPANT_REGEX = "(-p|-name|-n|-email|-e)";
     private static final String ITEM_REGEX = "(-m|-e)";
     private static final String REMOVE_PARTICIPANT_REGEX = "(-p|-e)";
     private static final String MARK_EVENT_REGEX = "-e|-s";
@@ -435,9 +435,10 @@ public class Parser {
     private Command getEditParticipantCommand(String input) throws IndexOutOfBoundsException, InvalidCommandException {
         String[] inputParts = input.split(PARTICIPANT_REGEX);
         String participantName = inputParts[1].trim();
-        String newNumber = inputParts[2].trim();
-        String newEmail = inputParts[3].trim();
-        String eventName = inputParts[4].trim();
+        String newName = inputParts[2].trim();
+        String newNumber = inputParts[3].trim();
+        String newEmail = inputParts[4].trim();
+        String eventName = inputParts[5].trim();
 
         if (!isValidPhoneNumber(newNumber)) {
             logger.log(WARNING, "Invalid phone number format");
@@ -449,7 +450,7 @@ public class Parser {
             throw new InvalidCommandException(INVALID_EMAIL_MESSAGE);
         }
 
-        return new EditParticipantCommand(participantName, newNumber, newEmail, eventName);
+        return new EditParticipantCommand(participantName, newName, newNumber, newEmail, eventName);
     }
 
     //@@author MatchaRRR

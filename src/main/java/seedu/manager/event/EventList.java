@@ -179,7 +179,7 @@ public class EventList  {
      */
     public Optional<Event> getEventByName(String eventName) {
         for (Event event : eventList) {
-            if (event.getEventName().equals(eventName)) {
+            if (event.getEventName().equalsIgnoreCase(eventName)) {
                 return Optional.of(event);
             }
         }
@@ -269,7 +269,7 @@ public class EventList  {
     public boolean editEvent(String eventName, String newEventName, LocalDateTime eventTime, String eventVenue,
             Priority eventPriority) throws DuplicateDataException {
 
-        if (getEventByName(newEventName).isPresent()) {
+        if (!eventName.equalsIgnoreCase(newEventName) && getEventByName(newEventName).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_EVENT_MESSAGE);
         }
 
@@ -301,10 +301,11 @@ public class EventList  {
      * @return {@code true} if the participant was successfully edited;
      *         {@code false} if the event does not exist or the participant was not found.
      */
-    public boolean editParticipant(String participantName, String number, String email, String eventName) {
+    public boolean editParticipant(String participantName, String newName, String number, String email,
+            String eventName) throws DuplicateDataException {
         for (Event event : eventList) {
             if (event.getEventName().equals(eventName)) {
-                return event.updateParticipant(participantName, number, email);
+                return event.updateParticipant(participantName, newName, number, email);
             }
         }
         return false;

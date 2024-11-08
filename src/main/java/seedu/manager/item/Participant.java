@@ -53,22 +53,16 @@ public class Participant extends Item {
 
     //@@author KuanHsienn
     /**
-     * Sets the contact number of the participant.
+     * Sets the details of the participant.
      *
+     * @param newName the new name of the participant.
      * @param newNumber the new contact number of the participant.
-     */
-    public void setNumber(String newNumber) {
-        this.number = newNumber;
-    }
-
-    //@@author KuanHsienn
-    /**
-     * Sets the contact email of the participant.
-     *
      * @param newEmail the new contact email of the participant.
      */
-    public void setEmail(String newEmail) {
-        this.email = newEmail;
+    public void setDetails(String newName, String newNumber, String newEmail) {
+        name = newName;
+        number = newNumber;
+        email = newEmail;
     }
 
     //@@author glenn-chew

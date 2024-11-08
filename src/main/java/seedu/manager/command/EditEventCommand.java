@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Represents a command to edit an event to the event list.
  * The edit command will store the event's name, time, and venue.
  */
-public class EditEventCommand extends Command{
+public class EditEventCommand extends Command {
     public static final String COMMAND_WORD = "edit";
     private static final String EDIT_EVENT_MESSAGE = "Event information successfully updated";
     private static final String EDIT_FAILURE_MESSAGE = "Event not found!";
